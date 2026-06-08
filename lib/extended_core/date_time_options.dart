@@ -1,5 +1,6 @@
+import 'package:custom_core_types/custom_core_types/custom_date_type/date.dart';
+import 'package:custom_core_types/custom_core_types/custom_date_type/month.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 
 /// [DateTime.now] の時刻なし版
 DateTime get nowDate => DateTime.now().omitTime;
@@ -210,122 +211,6 @@ int _differenceAcrossMonths({
   // 小さい方の月の残りの日数 + 大きい方の月中の経過日数 + 間の月分
   final int result = differenceToEndDay + month1.day + _additionalDifference;
   return result;
-}
-
-class Month {
-  final int year;
-  final int month;
-
-  // DateTimeのコンストラクタで翌月の「0日」を指定すると、今月の末日が得られるらしい
-  int get numberOfDays => DateTime(year, month + 1, 0).day;
-
-  // int get numberOfDays {
-  //   final DateTime startOfNextMonth = month + 1 <= 12
-  //       ? DateTime(year, month + 1, 1)
-  //       : DateTime(year + 1, 1, 1);
-  //   return startOfNextMonth.subtract(Duration(days: 1)).day;
-  // }
-  const Month(this.year, this.month);
-
-  /// 1ヶ月前を取得するメソッド
-  Month back() {
-    // 1月の場合は、前年の12月を返す
-    if (month == 1) {
-      return Month(year - 1, 12);
-    }
-    // それ以外は、前の月を返す
-    else {
-      return Month(year, month - 1);
-    }
-  }
-
-  /// 1ヶ月後を取得するメソッド
-  Month toNext() {
-    // 12月の場合は、翌年の1月を返す
-    if (month == 12) {
-      return Month(year + 1, 1);
-    }
-    // それ以外は、次の月を返す
-    else {
-      return Month(year, month + 1);
-    }
-  }
-
-  /// [DateTime] に変換（その月の1日）
-  DateTime toDateTime() => DateTime(year, month, 1);
-
-  /// [Date] に変換（その月の1日）
-  Date toDate() => Date.onMonth(this, 1);
-}
-
-/// 時刻なしの日付データ
-@immutable
-class Date {
-  /// 内部で 00:00:00 の [DateTime] を持つ
-  final DateTime _dt;
-
-  Date(int year, int month, int day) : _dt = DateTime(year, month, day);
-
-  Date.onMonth(Month month, int day)
-    : _dt = DateTime(month.year, month.month, day);
-
-  DateTime toDateTime() => _dt;
-
-  /// 内部用コンストラクタ
-  Date._(this._dt);
-
-  /// 年
-  int get year => _dt.year;
-
-  /// 月 (1-12)
-  int get month => _dt.month;
-
-  /// 日 (1-31)
-  int get day => _dt.day;
-
-  /// [n] 日前
-  Date nDaysAgo(int n) => Date._(_dt.subtract(Duration(days: n)));
-
-  /// [n] 日後
-  Date nDaysLater(int n) => Date._(_dt.add(Duration(days: n)));
-
-  /// 今日から何日前か
-  ///
-  /// 今日なら `0` 。
-  int get priorToToday {
-    final todaysDateTime = DateTime.now().omitTime;
-    return todaysDateTime.difference(_dt).inDays;
-  }
-
-  // 各比較演算子
-  @override
-  bool operator ==(Object other) {
-    assert(other is! DateTime, "DateクラスとDateTimeクラスを直接比較しています。（ == ）");
-    return other is Date && _dt == other._dt;
-  }
-
-  bool operator <(Date other) {
-    assert(other is! DateTime, "DateクラスとDateTimeクラスを直接比較しています。( < )");
-    return _dt.isBefore(other._dt);
-  }
-
-  bool operator >(Date other) {
-    assert(other is! DateTime, "DateクラスとDateTimeクラスを直接比較しています。( > )");
-    return _dt.isAfter(other._dt);
-  }
-
-  bool operator <=(Date other) {
-    assert(other is! DateTime, "DateクラスとDateTimeクラスを直接比較しています。( <= )");
-    return _dt.isBefore(other._dt) || _dt == other._dt;
-  }
-
-  bool operator >=(Date other) {
-    assert(other is! DateTime, "DateクラスとDateTimeクラスを直接比較しています。( >= )");
-    return _dt.isAfter(other._dt) || _dt == other._dt;
-  }
-
-  @override
-  int get hashCode => _dt.hashCode;
 }
 
 /// todo printメソッド [date_time_options.dart]
