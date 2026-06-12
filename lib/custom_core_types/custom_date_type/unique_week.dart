@@ -19,9 +19,9 @@ class UniqueWeek implements Comparable<UniqueWeek> {
   const UniqueWeek(this.absoluteWeekIndex);
 
   /// 指定した [DateTime]（デフォルトは現在時刻）が属する週の [UniqueWeek] を作成。
-  factory UniqueWeek.fromDateTime(DateTime date) {
+  factory UniqueWeek.fromDateTime(DateTime dateTime) {
     // タイムゾーンによるブレを防ぐため、UTCに変換して計算
-    final utcDate = date.toUtc();
+    final utcDate = dateTime.toUtc();
 
     // 指定日とエポックの差分（ミリ秒）から経過週数を計算
     final difference = utcDate.difference(epoch);
@@ -193,3 +193,6 @@ class UniqueWeek implements Comparable<UniqueWeek> {
     return absoluteWeekIndex.compareTo(other.absoluteWeekIndex);
   }
 }
+
+/// 今週
+UniqueWeek get thisWeek => UniqueWeek.fromDateTime(DateTime.now());

@@ -19,6 +19,10 @@ class Month {
   // }
   const Month(this.year, this.month);
 
+  factory Month.fromDateTime(DateTime dateTime){
+    return Month(dateTime.year, dateTime.month);
+  }
+
   /// 1ヶ月前を取得するメソッド
   Month back() {
     // 1月の場合は、前年の12月を返す
@@ -49,3 +53,6 @@ class Month {
   /// [Date] に変換（その月の1日）
   Date toDate() => Date.onMonth(this, 1);
 }
+
+/// 今月
+Month get thisMonth => Month.fromDateTime(DateTime.now());
