@@ -17,13 +17,22 @@ class Date {
   DateTime toDateTime() => _dt;
 
   /// 内部用コンストラクタ
-  Date._(this._dt);
+  const Date._(this._dt);
+
+  /// UTC 版
+  factory Date.utc(int year, int month, int day){
+    final DateTime utcDateTime = DateTime.utc(year, month, day);
+    return Date._(utcDateTime);
+  }
 
   /// 年
   int get year => _dt.year;
 
   /// 月 (1-12)
   int get month => _dt.month;
+
+  /// 曜日（月曜日が 1 、日曜日が 7 ）
+  int get week => _dt.weekday;
 
   /// 日 (1-31)
   int get day => _dt.day;
@@ -33,6 +42,17 @@ class Date {
 
   /// [n] 日後
   Date nDaysLater(int n) => Date._(_dt.add(Duration(days: n)));
+
+  /// UTC に変換
+  Date toUtc()=> Date._(_dt.toUtc());
+
+  /// UTC からローカルに変換
+  Date toLocal() => Date._(_dt.toLocal());
+
+  /// 引数（[other]）との差分を [Duration] で返すメソッド
+  ///
+  /// [other] の方が古い場合に、正。
+  Duration difference(Date other)=> toDateTime().difference(other.toDateTime());
 
   /// 今日から何日前か
   ///
