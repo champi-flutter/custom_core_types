@@ -65,24 +65,28 @@ class UniqueWeek implements Comparable<UniqueWeek> {
 
   // todo コンストラクタ
   /// 累積週数から直接 [UniqueWeek] を作成。
-  const UniqueWeek(this.relativeWeekIndex, {required this.firstWeekUtc})
-    : assert(
-        firstWeekUtc >= 1 && firstWeekUtc <= 7,
-        "無効な数値です（UniqueWeek.firstWeek）",
-      );
+  const UniqueWeek(
+    this.relativeWeekIndex, {
+    this.firstWeekUtc = DateTime.monday,
+  }) : assert(
+         firstWeekUtc >= 1 && firstWeekUtc <= 7,
+         "無効な数値です（UniqueWeek.firstWeek）",
+       );
 
   /// 指定した [DateTime]（デフォルトは現在時刻）が属する週の [UniqueWeek] を作成。
   ///
+  /// 週の開始日を指定可能（[firstDate]）。指定されなかった場合は、月曜日になる。
+  ///
   /// 曜日を [DateTime] から指定する場合は、[DateTime.weekday] を、
   /// [Date] から指定する場合は[Date.week] を用いること。
-  factory UniqueWeek.fromDate({
-    required Date currentDate,
-    required Date firstDate,
-  })
+  factory UniqueWeek.fromDate({required Date currentDate, Date? firstDate})
   // 折りたたみ用
   {
     // UTC 基準で曜日を取得
-    final int _firstWeek = firstDate.toUtc().week;
+    final int _firstWeek = firstDate == null
+    // 指定されなかった場合は月曜日
+        ? DateTime.monday
+        : firstDate.toUtc().week;
     // 相対 epoch を取得
     final Date optimizedEpoch = _getOptimizedEpoch(_firstWeek);
 
@@ -171,7 +175,7 @@ class UniqueWeek implements Comparable<UniqueWeek> {
     // （Dart の `.floor` は床関数（その数を超えない最大の整数を返す））
     final int weekNum = (duration.inDays / 7).floor() + 1;
 
-    if(weekNum > 0 ) {
+    if (weekNum > 0) {
       return [theYear, weekNum];
     }
     // 1月の 1 ~ 3 日では、1月4日を含む週の開始日より前なら、前年（の週）になる
@@ -187,7 +191,6 @@ class UniqueWeek implements Comparable<UniqueWeek> {
       );
       return [theYear - 1, (prevDuration.inDays / 7).floor() + 1];
     }
-
   }
 
   /// この週が属する年。
@@ -262,7 +265,7 @@ class UniqueWeek implements Comparable<UniqueWeek> {
   }
 
   /// 指定日付がこの週に含まれているかどうか
-  bool includesDate(Date date){
+  bool includesDate(Date date) {
     final Date utcDate = date.toUtc();
     // 週の開始日から何日はなれているか（週の開始日より古い日付の場合、負になる）
     final int difference = utcDate.difference(firstDateOfWeekUtc).inDays;
