@@ -62,6 +62,10 @@ class Date {
     return todaysDateTime.difference(_dt).inDays;
   }
 
+  /// 「◯ ◯ 年 ◯ 月 ◯ 日」変換メソッド
+  String toStrFormat() =>
+      "$year年$month月$day日";
+
   // 各比較演算子
   @override
   bool operator ==(Object other) {
