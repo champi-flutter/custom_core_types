@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 /// 全期間に対して一意に識別できる「月」を表す不変クラス。
 @immutable
-class Month {
+class Month implements Comparable<Month>{
   final int year;
   final int month;
 
@@ -52,6 +52,15 @@ class Month {
 
   /// [Date] に変換（その月の1日）
   Date toDate() => Date.onMonth(this, 1);
+
+  /// 比較ロジック
+  @override
+  int compareTo(Month other) {
+    if (year != other.year) {
+      return year.compareTo(other.year);
+    }
+    return month.compareTo(other.month);
+  }
 }
 
 /// 今月
