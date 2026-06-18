@@ -61,6 +61,12 @@ class Month implements Comparable<Month>{
     }
     return month.compareTo(other.month);
   }
+  // 各比較演算子
+  @override
+  bool operator ==(Object other) {
+    assert(other is Month, "DateクラスとDateTimeクラスを直接比較しています。（ == ）");
+    return other is Month && month == other.month && year == other.year;
+  }
 }
 
 /// 今月
