@@ -11,3 +11,5 @@ export 'package:custom_core_types/custom_core_types/custom_date_type/unique_week
 
 // extended_core
 export 'package:custom_core_types/extended_core/date_time_options.dart';
+// 2026/06/30 追加
+export 'package:custom_core_types/extended_core/map_options.dart';
