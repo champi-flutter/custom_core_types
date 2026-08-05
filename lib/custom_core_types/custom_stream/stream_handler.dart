@@ -9,6 +9,9 @@ abstract class SingleStreamHandler<T> {
   /// ストリームを購読
   Future<void> listenTo(
     Stream<T> stream, {
+    required void Function(T data) onData,
+    Function? onStreamingError,
+    void Function()? onDone,
     bool cancelOnError = false,
   })
   // 折りたたみ用
@@ -29,19 +32,6 @@ abstract class SingleStreamHandler<T> {
     }
   }
 
-  /// データ受信時の処理（派生クラスで必ず実装する）
-  @protected
-  void onData(T data);
-
-  /// 購読中のエラー発生時の処理
-  ///
-  /// 必要に応じて派生クラスでオーバーライド）
-  @protected
-  void onStreamingError(Object error, [StackTrace? stackTrace]) {
-    final st = stackTrace ?? StackTrace.current;
-    _print("[$runtimeType] Error: $error\n$st");
-  }
-
   /// 購読開始時のエラー発生時の処理
   ///
   /// 必要に応じて派生クラスでオーバーライド）
@@ -50,12 +40,6 @@ abstract class SingleStreamHandler<T> {
     final st = stackTrace ?? StackTrace.current;
     _print("[$runtimeType] Error: $error\n$st");
   }
-
-  /// Stream 終了時の処理
-  ///
-  /// 必要に応じて派生クラスでオーバーライド
-  @protected
-  void onDone() {}
 
   /// 購読をキャンセルする
   Future<void> cancel() async {
