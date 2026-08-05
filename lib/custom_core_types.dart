@@ -11,6 +11,10 @@ export 'package:custom_core_types/custom_core_types/custom_date_type/month.dart'
 
 export 'package:custom_core_types/custom_core_types/custom_date_type/unique_week.dart';
 
+// 2026/08/05 追加: /custom_stream
+export 'package:custom_core_types/custom_core_types/custom_stream/identifiable_stream_subscription.dart';
+export 'package:custom_core_types/custom_core_types/custom_stream/stream_handler.dart';
+
 // extended_core
 export 'package:custom_core_types/extended_core/date_time_options.dart';
 // 2026/06/30 追加
