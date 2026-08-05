@@ -216,7 +216,7 @@ int _differenceAcrossMonths({
 /// 今年
 int get thisYear => DateTime.now().year;
 
-/// todo printメソッド [date_time_options.dart]
+/// printメソッド [date_time_options.dart]
 void _print(String s1, [String? s2, String? s3, String? s4, String? s5]) {
   if (kDebugMode) {
     print("");
