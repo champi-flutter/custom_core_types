@@ -1,14 +1,20 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
+import 'package:rxdart/rxdart.dart';
 
 /// 1つの [StreamSubscription] を扱うハンドラクラス
 abstract class SingleStreamHandler<T> {
   StreamSubscription<T>? _subscription;
 
-  /// ストリームを購読
-  Future<void> listenTo(
-    Stream<T> stream, {
+  /// コントローラ
+  final StreamController<T> _controller = BehaviorSubject<T>();
+
+  /// ストリーム
+  Stream<T> get stream => _controller.stream;
+
+  /// ストリームを購読する
+  Future<void> listen({
     required void Function(T data) onData,
     Function? onStreamingError,
     void Function()? onDone,
@@ -32,9 +38,14 @@ abstract class SingleStreamHandler<T> {
     }
   }
 
+  /// データをストリームに流す
+  void add(T data){
+    _controller.add(data);
+  }
+
   /// 購読開始時のエラー発生時の処理
   ///
-  /// 必要に応じて派生クラスでオーバーライド）
+  /// 必要に応じて派生クラスでオーバーライド
   @protected
   void onInitializationError(Object error, [StackTrace? stackTrace]) {
     final st = stackTrace ?? StackTrace.current;
@@ -51,6 +62,7 @@ abstract class SingleStreamHandler<T> {
   @mustCallSuper
   Future<void> dispose() async {
     await cancel();
+    await _controller.close();
   }
 
   /// 購読を一時停止
