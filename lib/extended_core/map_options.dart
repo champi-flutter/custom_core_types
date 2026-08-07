@@ -3,10 +3,6 @@
 extension ListMapOptions<K, V> on Map<K, List<V>>{
   /// Map の value がリストの時の `.add` のプロセス
   void addNullable({required K key, required V value}){
-    if(containsKey(key)){
-      this[key]!.add(value);
-    } else {
-      this[key] = [value];
-    }
+    putIfAbsent(key, () => []).add(value);
   }
 }
