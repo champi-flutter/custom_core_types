@@ -6,12 +6,22 @@ class CacheEntry<V> {
   CacheEntry(this.value);
 }
 
-// abstract class CachePolicy<K, V, E extends CacheEntry<V>>{
-//
-// }
+abstract interface class CacheEvent<K, V, E extends CacheEntry<V>> {
+  /// キャッシュへのアクセスがあったときの処理
+  void onAccess(K key, E entry);
+
+  /// サブクラスで独自のエントリのインスタンスを生成できるようにするファクトリメソッド
+  ///
+  /// 独自のエントリのコンストラクタを返す。
+  E createEntry(V value);
+}
 
 /// ベースとなるキャッシュクラス
 abstract class BaseCache<K, V, E extends CacheEntry<V>> {
+  BaseCache(this._event);
+
+  final CacheEvent<K, V, E> _event;
+
   final Map<K, E> _storage = {};
 
   // todo [_storage] の情報へのアクセス
@@ -42,7 +52,7 @@ abstract class BaseCache<K, V, E extends CacheEntry<V>> {
     if (entry == null) return null;
 
     // アクセス時のフック（サブクラスでログ記録や頻度更新に利用）
-    onAccess(key, entry);
+    _event.onAccess(key, entry);
     return entry.value;
   }
 
@@ -55,17 +65,17 @@ abstract class BaseCache<K, V, E extends CacheEntry<V>> {
     if (currentEntry != null) {
       currentEntry.value = value;
       // アクセスを知らせる
-      onAccess(key, currentEntry);
+      _event.onAccess(key, currentEntry);
     }
     // 新たな key と value を設置する場合
     else {
       // キャッシュの枠を追加するときのコールバックを呼び出す
       onAdd();
       // [E] に対応するエントリに変換
-      final E entry = createEntry(value);
+      final E entry = _event.createEntry(value);
       _storage[key] = entry;
       // アクセスを知らせる
-      onAccess(key, entry);
+      _event.onAccess(key, entry);
     }
   }
 
@@ -77,20 +87,8 @@ abstract class BaseCache<K, V, E extends CacheEntry<V>> {
   // todo 継承先で override するメソッド
   /// キャッシュの枠を追加するときのコールバック
   @protected
-  void onAdd();
-
-  /// キャッシュへのアクセスがあったときの処理
-  @protected
-  void onAccess(K key, E entry);
-
-  /// サブクラスで独自のエントリのインスタンスを生成できるようにするファクトリメソッド
-  ///
-  /// 独自のエントリのコンストラクタを返す。
-  @protected
-  E createEntry(V value);
+  void onAdd() {}
 }
-
-class SimpleCache<K, V> extends BaseCache<K, V, CacheEntry<V>> {}
 
 /// キャッシュの更新および出力を扱うハンドラの抽象基底クラス
 ///
@@ -121,25 +119,20 @@ abstract class BaseCacheHandler<
   ///     : super(SuperCache<K, V>());
   /// }
   /// ```
-  final C cache;
+  final C _cache;
 
-  BaseCacheHandler(this.cache);
+  BaseCacheHandler(this._cache);
 
   /// キャッシュを更新し、出力処理を呼び出す統一フロー（オーバーライド不可）
   @nonVirtual
   void update(Map<K, V> dataMap) {
     for (final entry in dataMap.entries) {
-      cache[entry.key] = entry.value;
+      _cache[entry.key] = entry.value;
     }
-    output(cache.base);
+    output(_cache.base);
   }
 
   /// 更新後の状態を出力する抽象メソッド（継承先で実装）
   @protected
   void output(Map<K, V> dataMap);
-}
-
-abstract class SimpleCacheHandler<K, V>
-    extends BaseCacheHandler<K, V, SimpleCache<K, V>> {
-  SimpleCacheHandler() : super(SimpleCache<K, V>());
 }

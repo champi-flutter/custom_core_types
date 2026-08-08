@@ -8,7 +8,13 @@ abstract class EvictingCache<K, V, E extends CacheEntry<V>> extends BaseCache<K,
   /// キャッシュの最大容量
   final int capacity;
 
-  EvictingCache({required this.capacity});
+  final CacheEviction<K, V, E> _event;
+
+  EvictingCache({required this.capacity,
+    required CacheEviction<K, V, E> event,
+  })
+      : _event = event,
+        super(event);
 
   @override
   @protected
@@ -20,19 +26,6 @@ abstract class EvictingCache<K, V, E extends CacheEntry<V>> extends BaseCache<K,
     }
   }
 
-  /// キャッシュへのアクセスがあったときの処理
-  ///
-  /// キャッシュ破棄ファクターを更新する。
-  @override
-  @protected
-  void onAccess(K key, E entry);
-
-  /// 最大容量超過時にどの entry を削除するかを決めるロジック
-  ///
-  /// 対応する key を返す。
-  @protected
-  K specifyToEvict();
-
   /// キャッシュ溢れ発生時の削除処理
   @protected
   @nonVirtual
@@ -43,7 +36,7 @@ abstract class EvictingCache<K, V, E extends CacheEntry<V>> extends BaseCache<K,
     );
 
     // 継承先指定のロジックで、削除する項目を決定する
-    final K keyToEvict = specifyToEvict();
+    final K keyToEvict = _event.specifyToEvict();
 
     assert(
     containsKey(keyToEvict),
@@ -52,4 +45,12 @@ abstract class EvictingCache<K, V, E extends CacheEntry<V>> extends BaseCache<K,
 
     removeAt(keyToEvict);
   }
+}
+
+abstract interface class CacheEviction<K, V, E extends CacheEntry<V>> implements CacheEvent<K, V, E>{
+
+  /// 最大容量超過時にどの entry を削除するかを決めるロジック
+  ///
+  /// 対応する key を返す。
+  K specifyToEvict();
 }
