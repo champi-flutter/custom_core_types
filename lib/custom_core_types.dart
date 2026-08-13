@@ -15,8 +15,18 @@ export 'package:custom_core_types/custom_core_types/custom_date_type/unique_week
 export 'package:custom_core_types/custom_core_types/custom_stream/identifiable_stream_subscription.dart';
 export 'package:custom_core_types/custom_core_types/custom_stream/stream_handler.dart';
 
-// 2026/08/07 追加: /cache_handler
-export 'package:custom_core_types/custom_core_types/cache_handler/lfu_cache_handler.dart';
+// 2026/08/13 追加: /cache_handler
+export 'package:custom_core_types/custom_core_types/cache_handler/base_cache/base_cache.dart';
+export 'package:custom_core_types/custom_core_types/cache_handler/base_cache/base_cache_entry.dart';
+export 'package:custom_core_types/custom_core_types/cache_handler/base_cache/base_cache_event.dart';
+export 'package:custom_core_types/custom_core_types/cache_handler/base_cache/base_cache_handler.dart';
+export 'package:custom_core_types/custom_core_types/cache_handler/simple_cache/simple_cache.dart';
+export 'package:custom_core_types/custom_core_types/cache_handler/simple_cache/simple_cache_entry.dart';
+export 'package:custom_core_types/custom_core_types/cache_handler/simple_cache/simple_cache_handler.dart';
+export 'package:custom_core_types/custom_core_types/cache_handler/evicting_cache/evicting_cache.dart';
+export 'package:custom_core_types/custom_core_types/cache_handler/evicting_cache/lfu/lfu_cache.dart';
+export 'package:custom_core_types/custom_core_types/cache_handler/evicting_cache/lfu/lfu_cache_entry.dart';
+export 'package:custom_core_types/custom_core_types/cache_handler/evicting_cache/lfu/lfu_cache_handler.dart';
 
 // extended_core
 export 'package:custom_core_types/extended_core/date_time_options.dart';
