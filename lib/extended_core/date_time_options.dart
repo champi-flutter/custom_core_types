@@ -8,10 +8,13 @@ DateTime get nowDate => DateTime.now().omitTime;
 /// [DateTime.now] の時刻あり版
 DateTime get nowWithTime => DateTime.now();
 
-/// 今日（[Date] 型）
+/// 当日（[Date] 型）
 Date get today => DateTime.now().toDate();
 
-/// 今日の日付を`yyyymmdd` の整数で参照
+/// 翌日（[Date] 型）
+Date get tomorrow => today.nDaysLater(1);
+
+/// 当日の日付を`yyyymmdd` の整数で参照
 int get todaysId => DateTime.now().dateId;
 
 /// 〜日前（[priorToToday]）の日付
