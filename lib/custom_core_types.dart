@@ -13,7 +13,7 @@ export 'package:custom_core_types/custom_core_types/custom_date_type/unique_week
 
 // 2026/08/05 追加: /custom_stream
 export 'package:custom_core_types/custom_core_types/custom_stream/identifiable_stream_subscription.dart';
-export 'package:custom_core_types/custom_core_types/custom_stream/stream_handler.dart';
+export 'package:custom_core_types/custom_core_types/custom_stream/stream_handler/single_stream_handler.dart';
 
 // 2026/08/13 追加: /cache_handler
 export 'package:custom_core_types/custom_core_types/cache_handler/base_cache/base_cache.dart';

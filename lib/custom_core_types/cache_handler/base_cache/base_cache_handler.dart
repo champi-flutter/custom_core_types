@@ -36,16 +36,18 @@ abstract class BaseCacheHandler<
   BaseCacheHandler(this._cache);
 
   /// キャッシュを更新し、出力処理を呼び出す統一フロー（オーバーライド不可）
+  ///
+  /// 反映の完了まで待ちたい場合は、`await` をつけるとよい。
   @nonVirtual
-  void update(Map<K, V> dataMap) {
+  Future<void> update(Map<K, V> dataMap) async {
     for (final entry in dataMap.entries) {
       _cache[entry.key] = entry.value;
     }
-    output(_cache.base);
+    await output(_cache.base);
   }
 
   /// 更新後の状態を出力する抽象メソッド（継承先で実装）
   @protected
   @visibleForOverriding
-  void output(Map<K, V> dataMap);
+  Future<void> output(Map<K, V> dataMap);
 }

@@ -5,7 +5,9 @@ import 'package:rxdart/rxdart.dart';
 
 /// 1つの [StreamSubscription] を扱うハンドラクラス
 abstract class SingleStreamHandler<T> {
-  StreamSubscription<T>? _subscription;
+  @nonVirtual
+  @protected
+  StreamSubscription<T>? subscription;
 
   /// コントローラ
   final StreamController<T> _controller = BehaviorSubject<T>();
@@ -26,20 +28,21 @@ abstract class SingleStreamHandler<T> {
       // 既存の購読があれば二重破棄を防ぐため一旦キャンセル
       await cancel();
 
-      _subscription = stream.listen(
+      subscription = stream.listen(
         onData,
         onError: onStreamingError,
         onDone: onDone,
         cancelOnError: cancelOnError,
       );
     } catch (e, st) {
-      _subscription = null;
+      subscription = null;
       onInitializationError(e, st);
     }
   }
 
   /// データをストリームに流す
-  void add(T data){
+  @mustCallSuper
+  void add(T data) {
     _controller.add(data);
   }
 
@@ -54,8 +57,8 @@ abstract class SingleStreamHandler<T> {
 
   /// 購読をキャンセルする
   Future<void> cancel() async {
-    await _subscription?.cancel();
-    _subscription = null;
+    await subscription?.cancel();
+    subscription = null;
   }
 
   /// 自身の破棄
@@ -67,32 +70,32 @@ abstract class SingleStreamHandler<T> {
 
   /// 購読を一時停止
   void pause() {
-    if (_subscription != null) {
-      if (!_subscription!.isPaused) {
-        _subscription!.pause();
+    if (subscription != null) {
+      if (!subscription!.isPaused) {
+        subscription!.pause();
       }
     }
   }
 
   /// 一時停止中の購読を再開
   void resume() {
-    if (_subscription != null) {
-      if (_subscription!.isPaused) {
-        _subscription!.resume();
+    if (subscription != null) {
+      if (subscription!.isPaused) {
+        subscription!.resume();
       }
     }
   }
 }
 
-/// printメソッド [stream_handler.dart]
+/// printメソッド [single_stream_handler.dart]
 void _print(String s1, [String? s2, String? s3, String? s4, String? s5]) {
   if (kDebugMode) {
     print("");
-    print("[stream_handler.dart]　" + s1);
-    if (s2 != null) print("[stream_handler.dart]　" + s2);
-    if (s3 != null) print("[stream_handler.dart]　" + s3);
-    if (s4 != null) print("[stream_handler.dart]　" + s4);
-    if (s5 != null) print("[stream_handler.dart]　" + s5);
+    print("[single_stream_handler.dart]　" + s1);
+    if (s2 != null) print("[single_stream_handler.dart]　" + s2);
+    if (s3 != null) print("[single_stream_handler.dart]　" + s3);
+    if (s4 != null) print("[single_stream_handler.dart]　" + s4);
+    if (s5 != null) print("[single_stream_handler.dart]　" + s5);
     print("");
   }
 }
