@@ -28,6 +28,9 @@ export 'package:custom_core_types/custom_core_types/cache_handler/evicting_cache
 export 'package:custom_core_types/custom_core_types/cache_handler/evicting_cache/lfu/lfu_cache_entry.dart';
 export 'package:custom_core_types/custom_core_types/cache_handler/evicting_cache/lfu/lfu_cache_handler.dart';
 
+// 2026/08/19 追加: /custom_map
+export 'package:custom_core_types/custom_core_types/custom_map/bi_map.dart';
+
 // extended_core
 export 'package:custom_core_types/extended_core/date_time_options.dart';
 // 2026/06/30 追加
