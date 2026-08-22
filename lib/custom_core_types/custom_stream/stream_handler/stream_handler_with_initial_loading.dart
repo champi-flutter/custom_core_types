@@ -17,7 +17,7 @@ import 'package:riverpod_wrapper/riverpod_wrapper.dart';
 abstract class StreamHandlerWithInitialLoading<T>
     extends SingleStreamHandler<T> {
   @visibleForOverriding
-  LoadingUseCase get loader;
+  LoadingService get loader;
 
   /// ストリームを購読する
   @override
