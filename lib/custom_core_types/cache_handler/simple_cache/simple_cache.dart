@@ -8,5 +8,5 @@ class SimpleCache<K, V> extends BaseCache<K, V, SimpleCacheEntry<V>> {
   SimpleCacheEntry<V> createEntry(V value) => SimpleCacheEntry(value);
 
   @override
-  void onAddEntry(K key) {}
+  void onAddEntry(_) {}
 }
