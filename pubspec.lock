@@ -406,7 +406,7 @@ packages:
     description:
       path: "."
       ref: main
-      resolved-ref: "3dabe09cafdc0cca32c2a4346ab3d592dfc9b5aa"
+      resolved-ref: "515162d091ce44ec54ca7e630308016c470b6d64"
       url: "https://github.com/champi-flutter/riverpod_wrapper.git"
     source: git
     version: "1.2.0+9"

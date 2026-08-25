@@ -33,6 +33,12 @@ abstract class BaseCacheHandler<
   /// ```
   final C _cache;
 
+  /// [_cache] の Map
+  ///
+  /// このクラスと継承先のみ参照可能。
+  @protected
+  Map<K, V> get cacheMap => _cache.base;
+
   BaseCacheHandler(this._cache);
 
   /// キャッシュを更新し、出力処理を呼び出す統一フロー（オーバーライド不可）
@@ -43,7 +49,7 @@ abstract class BaseCacheHandler<
     for (final entry in dataMap.entries) {
       _cache[entry.key] = entry.value;
     }
-    await output(_cache.base);
+    await output(cacheMap);
   }
 
   /// 更新後の状態を出力する抽象メソッド（継承先で実装）
