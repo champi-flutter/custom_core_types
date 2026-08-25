@@ -26,7 +26,7 @@ abstract class EvictingCache<K, V, E extends BaseCacheEntry<V>> extends BaseCach
   @override
   @protected
   @nonVirtual
-  void onAddEntry() {
+  void onAddEntry(K key) {
     // 最大容量を超過時に削除を実行
     if (length >= capacity) {
       evict();

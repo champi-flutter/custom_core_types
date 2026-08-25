@@ -66,7 +66,7 @@ abstract class BaseCache<K, V, E extends BaseCacheEntry<V>> {
     // 新たな key と value を設置する場合
     else {
       // キャッシュの枠を追加するときのコールバックを呼び出す
-      onAddEntry();
+      onAddEntry(key);
       // [E] に対応するエントリに変換
       final E entry = createEntry(value);
       _storage[key] = entry;
@@ -84,7 +84,7 @@ abstract class BaseCache<K, V, E extends BaseCacheEntry<V>> {
   /// キャッシュの枠を追加するときのコールバック
   @protected
   @visibleForOverriding
-  void onAddEntry();
+  void onAddEntry(K key);
 
   /// key に対応する独自のキャッシュエントリのインスタンスをつくるファクトリメソッド
   ///
