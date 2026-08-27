@@ -45,6 +45,7 @@ abstract class BaseListCacheHandler<
   /// 対象リストを枠ごと更新し、出力するプロセス
   ///
   /// 反映の完了まで待ちたい場合は、`await` をつけるとよい。
+  @nonVirtual
   Future<void> updateList({required K key, required List<El> value}) async {
     _cache[key] = value;
     await output(_cache.base);
@@ -53,8 +54,22 @@ abstract class BaseListCacheHandler<
   /// 対象リストの指定 index の値（[value]）を更新し、出力するプロセス
   ///
   /// 反映の完了まで待ちたい場合は、`await` をつけるとよい。
+  @nonVirtual
   Future<void> updateEl({required K key, required int index, required El value}) async {
     _cache.setEl(key, index, value);
+    await output(_cache.base);
+  }
+
+  /// 対象リストに値を追加し、出力するプロセス
+  ///
+  /// 反映の完了まで待ちたい場合は、`await` をつけるとよい。
+  @nonVirtual
+  Future<void> addEl({required K key, required El value})async{
+    if(_cache.containsKey(key)) {
+      _cache[key]!.add(value);
+    } else {
+      _cache[key] = [value];
+    }
     await output(_cache.base);
   }
 
