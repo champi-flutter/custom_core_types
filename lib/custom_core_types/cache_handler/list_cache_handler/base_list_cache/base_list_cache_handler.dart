@@ -5,13 +5,13 @@ import 'package:flutter/foundation.dart';
 
 /// キャッシュの更新および出力を扱うハンドラの抽象基底クラス
 ///
-/// 継承先に対応するキャッシュクラス（[BaseCache] を継承）のコンストラクタを
+/// 継承先に対応するキャッシュクラス（[BaseListCache] を継承）のコンストラクタを
 /// イニシャライザで呼び出す。
 /// ```
-/// abstract class SuperCacheHandler<K, V>
-///   extends BaseCacheHandler<K, V, SuperCache<K, V>> {
-///   SuperCacheHandler()
-///     : super(SuperCache<K, V>());
+/// abstract class SuperListCacheHandler<K, V>
+///   extends BaseListCacheHandler<K, V, SuperListCache<K, V>> {
+///   SuperListCacheHandler()
+///     : super(SuperListCache<K, V>());
 /// }
 /// ```
 ///
@@ -22,14 +22,14 @@ abstract class BaseListCacheHandler<
 > {
   /// 内部で利用するキャッシュデータ構造
   ///
-  /// 継承先に対応するキャッシュクラス（[BaseCache] を継承）のコンストラクタを
+  /// 継承先に対応するキャッシュクラス（[BaseListCache] を継承）のコンストラクタを
   /// イニシャライザで呼び出す。
   ///
   /// ```
-  /// abstract class SuperCacheHandler<K, V>
-  ///   extends BaseCacheHandler<K, V, SuperCache<K, V>> {
-  ///   SuperCacheHandler()
-  ///     : super(SuperCache<K, V>());
+  /// abstract class SuperListCacheHandler<K, V>
+  ///   extends BaseListCacheHandler<K, V, SuperListCache<K, V>> {
+  ///   SuperListCacheHandler()
+  ///     : super(SuperListCache<K, V>());
   /// }
   /// ```
   final C _cache;
@@ -46,8 +46,8 @@ abstract class BaseListCacheHandler<
   ///
   /// 反映の完了まで待ちたい場合は、`await` をつけるとよい。
   @nonVirtual
-  Future<void> updateList({required K key, required List<El> value}) async {
-    _cache[key] = value;
+  Future<void> replace({required K key, required List<El> value}) async {
+    _cache.setList(key, value);
     await output(_cache.base);
   }
 
@@ -67,21 +67,21 @@ abstract class BaseListCacheHandler<
   Future<void> addEl({required K key, required El value})async{
     final List<El>? currentCache = _cache[key];
     if(currentCache != null) {
-      _cache[key]= [...currentCache];
+      _cache.setList(key, [...currentCache, value]);
     } else {
-      _cache[key] = [value];
+      _cache.setList(key, [value]);
     }
     await output(_cache.base);
   }
 
-  /// Map で指定してキャッシュを更新し、出力処理を呼び出す統一フロー
+  /// Map で指定してキャッシュを更新し、出力するプロセス
   ///
   /// key（[dataMap.keys]）に対応する値を [dataMap.values] に更新する。
   ///
   /// 反映の完了まで待ちたい場合は、`await` をつけるとよい。
-  Future<void> updateMap(Map<K, List<El>> dataMap) async {
+  Future<void> replaceByMap(Map<K, List<El>> dataMap) async {
     for (final entry in dataMap.entries) {
-      _cache[entry.key] = entry.value;
+      _cache.setList(entry.key, entry.value);
     }
     await output(_cache.base);
   }

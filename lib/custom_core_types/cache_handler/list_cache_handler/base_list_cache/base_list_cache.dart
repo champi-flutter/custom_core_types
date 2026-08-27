@@ -1,4 +1,5 @@
 
+import 'package:custom_core_types/custom_core_types.dart';
 import 'package:custom_core_types/custom_core_types/cache_handler/list_cache_handler/base_list_cache/base_list_cache_entry.dart';
 import 'package:flutter/foundation.dart';
 
@@ -48,7 +49,7 @@ abstract class BaseListCache<K, El, En extends BaseListCacheEntry<El>> {
 
   // map[key] への代入
   @nonVirtual
-  void operator []=(K key, List<El> value) {
+  void setList(K key, List<El> value) {
     final currentEntry = _storage[key];
 
     // 指定 key に対応する値すでに存在し、それを更新する場合
@@ -67,6 +68,9 @@ abstract class BaseListCache<K, El, En extends BaseListCacheEntry<El>> {
     }
   }
 
+  final Map<K, BiMap<int, int>> indexMap = {};
+
+  /// 指定 [key] のリストの指定 [index] に [value] を代入する
   void setEl (K key, int index, El value){
     final currentEntry = _storage[key];
 
