@@ -18,7 +18,6 @@ export 'package:custom_core_types/custom_core_types/custom_stream/stream_handler
 // 2026/08/13 追加: /cache_handler
 export 'package:custom_core_types/custom_core_types/cache_handler/base_cache/base_cache.dart';
 export 'package:custom_core_types/custom_core_types/cache_handler/base_cache/base_cache_entry.dart';
-export 'package:custom_core_types/custom_core_types/cache_handler/base_cache/base_cache_event.dart';
 export 'package:custom_core_types/custom_core_types/cache_handler/base_cache/base_cache_handler.dart';
 export 'package:custom_core_types/custom_core_types/cache_handler/simple_cache/simple_cache.dart';
 export 'package:custom_core_types/custom_core_types/cache_handler/simple_cache/simple_cache_entry.dart';
@@ -27,6 +26,19 @@ export 'package:custom_core_types/custom_core_types/cache_handler/evicting_cache
 export 'package:custom_core_types/custom_core_types/cache_handler/evicting_cache/lfu/lfu_cache.dart';
 export 'package:custom_core_types/custom_core_types/cache_handler/evicting_cache/lfu/lfu_cache_entry.dart';
 export 'package:custom_core_types/custom_core_types/cache_handler/evicting_cache/lfu/lfu_cache_handler.dart';
+export 'package:custom_core_types/custom_core_types/cache_handler/evicting_cache/fifo/fifo_cache.dart';
+export 'package:custom_core_types/custom_core_types/cache_handler/evicting_cache/fifo/fifo_cache_entry.dart';
+export 'package:custom_core_types/custom_core_types/cache_handler/evicting_cache/fifo/fifo_cache_handler.dart';
+export 'package:custom_core_types/custom_core_types/cache_handler/list_cache_handler/base_list_cache/base_list_cache.dart';
+export 'package:custom_core_types/custom_core_types/cache_handler/list_cache_handler/base_list_cache/base_list_cache_entry.dart';
+export 'package:custom_core_types/custom_core_types/cache_handler/list_cache_handler/base_list_cache/base_list_cache_handler.dart';
+export 'package:custom_core_types/custom_core_types/cache_handler/list_cache_handler/evicting_list_cache/evicting_list_cache.dart';
+export 'package:custom_core_types/custom_core_types/cache_handler/list_cache_handler/evicting_list_cache/lfu/lfu_list_cache.dart';
+export 'package:custom_core_types/custom_core_types/cache_handler/list_cache_handler/evicting_list_cache/lfu/lfu_list_cache_entry.dart';
+export 'package:custom_core_types/custom_core_types/cache_handler/list_cache_handler/evicting_list_cache/lfu/lfu_list_cache_handler.dart';
+export 'package:custom_core_types/custom_core_types/cache_handler/list_cache_handler/evicting_list_cache/fifo/fifo_list_cache.dart';
+export 'package:custom_core_types/custom_core_types/cache_handler/list_cache_handler/evicting_list_cache/fifo/fifo_list_cache_entry.dart';
+export 'package:custom_core_types/custom_core_types/cache_handler/list_cache_handler/evicting_list_cache/fifo/fifo_list_cache_handler.dart';
 
 // 2026/08/19 追加: /custom_collection
 export 'package:custom_core_types/custom_core_types/custom_collection//bi_map.dart';

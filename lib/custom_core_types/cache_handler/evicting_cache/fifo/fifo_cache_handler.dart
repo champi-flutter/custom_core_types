@@ -1,9 +1,10 @@
 
 import 'package:custom_core_types/custom_core_types/cache_handler/base_cache/base_cache_handler.dart';
+import 'package:custom_core_types/custom_core_types/cache_handler/evicting_cache/fifo/fifo_cache.dart';
 import 'package:custom_core_types/custom_core_types/cache_handler/evicting_cache/lfu/lfu_cache.dart';
 
 
-/// LFU のキャッシュハンドラ
+/// FIFO のキャッシュハンドラ
 ///
 /// ジェネリクスに識別子とデータの型を指定する。
 ///
@@ -19,8 +20,8 @@ import 'package:custom_core_types/custom_core_types/cache_handler/evicting_cache
 ///
 /// このクラスを継承して、[output] に、キャッシュ更新時の反映処理を記述する。
 abstract class FifoCacheHandler<K, V>
-    extends BaseCacheHandler<K, V, LfuCache<K, V>> {
+    extends BaseCacheHandler<K, V, FifoCache<K, V>> {
 
   FifoCacheHandler({required int capacity})
-      : super(LfuCache<K, V>(capacity: capacity));
+      : super(FifoCache<K, V>(capacity: capacity));
 }
