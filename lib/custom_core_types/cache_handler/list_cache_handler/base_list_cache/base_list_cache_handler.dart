@@ -73,6 +73,18 @@ abstract class BaseListCacheHandler<
     await output(_cache.base);
   }
 
+  /// Map で指定してキャッシュを更新し、出力処理を呼び出す統一フロー
+  ///
+  /// key（[dataMap.keys]）に対応する値を [dataMap.values] に更新する。
+  ///
+  /// 反映の完了まで待ちたい場合は、`await` をつけるとよい。
+  Future<void> updateMap(Map<K, List<El>> dataMap) async {
+    for (final entry in dataMap.entries) {
+      _cache[entry.key] = entry.value;
+    }
+    await output(_cache.base);
+  }
+
   /// 更新後の状態を出力する抽象メソッド（継承先で実装）
   @protected
   @visibleForOverriding
