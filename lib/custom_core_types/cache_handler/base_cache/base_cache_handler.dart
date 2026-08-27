@@ -43,6 +43,8 @@ abstract class BaseCacheHandler<
 
   /// キャッシュを更新し、出力処理を呼び出す統一フロー（オーバーライド不可）
   ///
+  /// key（[dataMap.keys]）に対応する値を [dataMap.values] に更新する。
+  ///
   /// 反映の完了まで待ちたい場合は、`await` をつけるとよい。
   @nonVirtual
   Future<void> update(Map<K, V> dataMap) async {
