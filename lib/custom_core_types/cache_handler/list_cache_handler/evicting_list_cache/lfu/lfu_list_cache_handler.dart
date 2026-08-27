@@ -8,7 +8,7 @@ import 'package:custom_core_types/custom_core_types.dart';
 /// ```
 /// /// 識別子の型が `int` 、データの型が `SampleData` の場合
 /// abstract class SampleListCacheHandler
-///     extends LfuListCacheHandler<int, List<SampleData>> {
+///     extends LfuListCacheHandler<int, SampleData> {
 ///   /// `super.capacity` を親に渡すための内部的なコンストラクタ
 ///   /// （抽象クラスなので呼び出し不可）
 ///   SampleListCacheHandler({required super.capacity});

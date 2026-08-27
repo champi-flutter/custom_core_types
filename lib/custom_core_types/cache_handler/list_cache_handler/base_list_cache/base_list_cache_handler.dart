@@ -65,8 +65,9 @@ abstract class BaseListCacheHandler<
   /// 反映の完了まで待ちたい場合は、`await` をつけるとよい。
   @nonVirtual
   Future<void> addEl({required K key, required El value})async{
-    if(_cache.containsKey(key)) {
-      _cache[key]!.add(value);
+    final List<El>? currentCache = _cache[key];
+    if(currentCache != null) {
+      _cache[key]= [...currentCache];
     } else {
       _cache[key] = [value];
     }
