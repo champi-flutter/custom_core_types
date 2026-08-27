@@ -4,5 +4,5 @@ class SimpleCacheEntry<V> extends BaseCacheEntry<V>{
   SimpleCacheEntry(super.value);
 
   @override
-  void onAccess() {}
+  bool onAccess() =>true;
 }

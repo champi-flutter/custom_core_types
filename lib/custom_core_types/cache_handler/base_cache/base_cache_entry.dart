@@ -5,5 +5,5 @@ abstract class BaseCacheEntry<V> {
 
   BaseCacheEntry(this.value);
 
-  void onAccess();
+  bool onAccess();
 }

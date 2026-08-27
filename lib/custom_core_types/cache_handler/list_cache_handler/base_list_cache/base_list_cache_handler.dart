@@ -55,8 +55,13 @@ abstract class BaseListCacheHandler<
   ///
   /// 反映の完了まで待ちたい場合は、`await` をつけるとよい。
   @nonVirtual
-  Future<void> updateEl({required K key, required int index, required El value}) async {
-    _cache.setEl(key, index, value);
+  Future<void> update({
+    required K key,
+    required Map<int, El> indexValueMap,
+  })
+  // 折りたたみ用
+  async {
+    await _cache.setEl(key: key, indexValueMap: indexValueMap);
     await output(_cache.base);
   }
 

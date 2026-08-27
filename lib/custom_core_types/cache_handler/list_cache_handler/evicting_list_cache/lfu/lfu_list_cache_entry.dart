@@ -8,7 +8,10 @@ class LfuListCacheEntry<El> extends BaseListCacheEntry<El> {
 
   /// アクセス時に [_frequency] を 1 増やす。
   @override
-  void onAccess()=>_frequency++;
+  bool onAccess() {
+    _frequency++;
+    return true;
+  }
 
   LfuListCacheEntry(super.value): _frequency = 1;
 }

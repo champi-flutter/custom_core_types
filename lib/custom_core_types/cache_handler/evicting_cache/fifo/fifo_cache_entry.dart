@@ -8,9 +8,7 @@ class FifoCacheEntry<V> extends BaseCacheEntry<V> {
 
   /// アクセス時に行う処理はない。
   @override
-  void onAccess() {
-
-  }
+  bool onAccess() =>true;
 
   FifoCacheEntry(super.value, {required int sequence}): _sequence = sequence;
 }

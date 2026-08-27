@@ -9,9 +9,7 @@ class FifoListCacheEntry<El> extends BaseListCacheEntry<El> {
 
   /// アクセス時に行う処理はない。
   @override
-  void onAccess() {
-
-  }
+  bool onAccess() =>true;
 
   FifoListCacheEntry(super.value, {required int sequence}): _sequence = sequence;
 }

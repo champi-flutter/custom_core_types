@@ -7,7 +7,7 @@ abstract class BaseListCacheEntry<El> {
 
   BaseListCacheEntry(this.value);
 
-  void onAccess();
+  bool onAccess();
 }
 
 class Identified<El>{

@@ -71,14 +71,38 @@ abstract class BaseListCache<K, El, En extends BaseListCacheEntry<El>> {
   final Map<K, BiMap<int, int>> indexMap = {};
 
   /// 指定 [key] のリストの指定 [index] に [value] を代入する
-  void setEl (K key, int index, El value){
+  Future<void> setEl ({
+    required K key,
+    required Map<int, El> indexValueMap,
+  })
+  // 折りたたみ用
+  async{
     final currentEntry = _storage[key];
-
-    // 指定 key に対応するリストが存在し、指定 index の枠が存在する場合
-    if (currentEntry != null && currentEntry.value.length <= index +1) {
-      currentEntry.value[index] = value;
+      // 指定 key に対応するリストが存在し、指定 index の枠が存在する場合
+    if (currentEntry != null) {
       // 対象のアクセス時コールバックを呼び出す
-      currentEntry.onAccess();
+      final bool willAccess = currentEntry.onAccess();
+      // 継承先で false になりうる実装もできる
+      if(willAccess) {
+        // 最終的に当てはめる値を保有するサブリストを生成する
+        // （`currentEntry.value[index]` に直接代入しない）
+        final List<El> resultList = [...currentEntry.value];
+        for (final entry in indexValueMap.entries) {
+          final index = entry.key;
+          final value = entry.value;
+          // index が有効かどうか
+          if (index >= 0 && index < currentEntry.value.length) {
+            // サブリストに当てはめる
+            resultList[index] = value;
+          }
+          else {
+            throw Exception(
+                "[BaseListCache] index が指定のリストに対して不適当です。");
+          }
+        }
+        // サブリストを当てはめる
+        currentEntry.value = resultList;
+      }
     }
     else {
       throw Exception("[BaseListCache] index が指定のリストに対して不適当です。");
