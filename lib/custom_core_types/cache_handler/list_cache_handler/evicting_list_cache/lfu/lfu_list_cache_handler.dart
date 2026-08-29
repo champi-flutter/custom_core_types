@@ -16,9 +16,9 @@ import 'package:custom_core_types/custom_core_types.dart';
 /// ```
 ///
 /// このクラスを継承して、[output] に、キャッシュ更新時の反映処理を記述する。
-abstract class LfuListCacheHandler<K, El>
-    extends BaseListCacheHandler<K, El, LfuListCache<K, El>> {
+abstract class LfuListCacheHandler<K, I, V>
+    extends BaseListCacheHandler<K, I, V, LfuCacheEntry<V>, LfuCache<I, V>, LfuListCache<K, I, V>> {
 
   LfuListCacheHandler({required int capacity})
-      : super(LfuListCache<K, El>(capacity: capacity));
+      : super(LfuListCache<K, I, V>(capacity: capacity));
 }

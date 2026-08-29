@@ -1,21 +1,20 @@
-
-
-import 'package:custom_core_types/custom_core_types/cache_handler/base_cache/base_cache.dart';
+import 'package:custom_core_types/custom_core_types.dart';
 import 'package:custom_core_types/custom_core_types/cache_handler/base_cache/base_cache_entry.dart';
-import 'package:custom_core_types/custom_core_types/cache_handler/base_cache/base_cache_handler.dart';
 import 'package:custom_core_types/custom_core_types/cache_handler/list_cache_handler/base_list_cache/base_list_cache.dart';
-import 'package:custom_core_types/custom_core_types/cache_handler/list_cache_handler/base_list_cache/base_list_cache_entry.dart';
 import 'package:flutter/foundation.dart';
 
 /// 容量超過時の削除機能を搭載するキャッシュの基底クラス
 ///
 /// 対応するイベントハンドラ（[CacheEviction]）を引数にとり、
 /// その具象クラスのコンストラクタを当てはめること。
-abstract class EvictingListCache<K, El, En extends BaseListCacheEntry<El>> extends BaseListCache<K, El, En>{
+///
+/// evict はグループ単位で行う。
+abstract class EvictingListCache<K, I, V, Ent extends BaseCacheEntry<V>, C extends BaseCache<I, V, Ent>>
+    extends BaseListCache<K, I, V, Ent, C> {
   /// キャッシュの最大容量
   final int capacity;
 
-  EvictingListCache({required this.capacity});
+  EvictingListCache(super._cache, {required this.capacity});
 
   @override
   @protected
@@ -39,19 +38,13 @@ abstract class EvictingListCache<K, El, En extends BaseListCacheEntry<El>> exten
   @protected
   @nonVirtual
   void evict() {
-    assert(
-    isNotEmpty,
-    "_storage.isEmpty: $runtimeType.evict",
-    );
+    assert(isNotEmpty, "_storage.isEmpty: $runtimeType.evict");
 
     // 継承先指定のロジックで、削除する項目を決定する
     final K keyToEvict = specifyToEvict();
 
-    assert(
-    containsKey(keyToEvict),
-    "存在しない key が指定されました。\n$runtimeType.evict",
-    );
+    assert(containsKey(keyToEvict), "存在しない key が指定されました。\n$runtimeType.evict");
 
-    removeAt(keyToEvict);
+    remove(keyToEvict);
   }
 }

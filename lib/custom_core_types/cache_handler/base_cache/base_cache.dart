@@ -36,7 +36,6 @@ abstract class BaseCache<K, V, E extends BaseCacheEntry<V>> {
 
   /// [_storage] から指定項目を削除する
   @nonVirtual
-  @protected
   void removeAt(K key) => _storage.remove(key);
 
   // 外側からの参照

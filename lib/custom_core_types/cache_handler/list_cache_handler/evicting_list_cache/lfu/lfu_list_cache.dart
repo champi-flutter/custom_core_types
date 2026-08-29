@@ -3,29 +3,44 @@ import 'package:custom_core_types/custom_core_types.dart';
 
 /// 使用頻度の低いキャッシュから削除していくキャッシュ
 ///  - [capacity]: キャッシュの最大容量
-class LfuListCache<K, El> extends EvictingListCache<K, El, LfuListCacheEntry<El>>{
-  LfuListCache({required super.capacity});
+class LfuListCache<K, I, V> extends EvictingListCache<K, I, V, LfuCacheEntry<V>, LfuCache<I, V>>{
+  LfuListCache({required super.capacity}): super(LfuCache(capacity: capacity));
 
   /// 削除対象決定ロジック
   ///
-  ///  - 最大容量超過時にどの entry を削除するかを決める。
+  /// key に対応するグループごとが対象。
+  ///
+  ///  - 最大容量超過時にどのグループを削除するかを決める。
   ///  - 対応する key を返す。
   @override
   K specifyToEvict() {
     late K result;
     int currentMinFreq = double.maxFinite.toInt(); // ♾️
-    for(final storageEntry in storage.entries){
-      final int freq = storageEntry.value.frequency;
-      // currentMinFreq == 無限 なので必ず一回は回る
+    // 全キャッシュを探索
+    for(final targetKey in group.keys){
+      // targetKey に含まれるキャッシュのリストをエントリ型で参照する
+      final List<LfuCacheEntry<V>> targetEntList = getEntries(targetKey);
+      // そのリスト全体の frequency を取得する
+      final int freq = targetEntList.freqOfList;
+      // currentMinFreq の初期値は無限なので必ず一回は回る
       if(freq < currentMinFreq){
         currentMinFreq = freq;
-        result = storageEntry.key;
+        result = targetKey;
       }
     }
     return result;
   }
 
-  /// [LfuListCacheEntry] を提供するファクトリメソッド
+  /// [LfuCacheEntry] を提供するファクトリメソッド
   @override
-  LfuListCacheEntry<El> createEntry(List<El> value) => LfuListCacheEntry(value);
+  LfuCacheEntry<V> createEntry(V value) => LfuCacheEntry(value);
+}
+
+/// [LfuCacheEntry] をリストで扱うための拡張メソッド
+extension EvictionLfuList<V> on Iterable<LfuCacheEntry<V>>{
+  int get freqOfList{
+    int result = 0;
+    forEach((entry)=>result + entry.frequency);
+    return result;
+  }
 }
