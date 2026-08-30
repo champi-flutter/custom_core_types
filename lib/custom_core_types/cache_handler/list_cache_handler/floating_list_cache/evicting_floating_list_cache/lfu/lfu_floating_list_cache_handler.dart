@@ -1,7 +1,5 @@
 
 import 'package:custom_core_types/custom_core_types.dart';
-import 'package:custom_core_types/custom_core_types/cache_handler/list_cache_handler/floating_list_cache/base_floating_list_cache/base_floating_list_cache_handler.dart';
-import 'package:custom_core_types/custom_core_types/cache_handler/list_cache_handler/floating_list_cache/floating_evicting_cache/lfu/lfu_floating_list_cache.dart';
 
 /// LFU のキャッシュハンドラ
 ///

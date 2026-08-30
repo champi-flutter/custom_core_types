@@ -1,10 +1,9 @@
 
 import 'package:custom_core_types/custom_core_types.dart';
-import 'package:custom_core_types/custom_core_types/cache_handler/list_cache_handler/floating_list_cache/floating_evicting_cache/evicting_floating_list_cache.dart';
 
 /// 使用頻度の低いキャッシュから削除していくキャッシュ
 ///  - [capacity]: キャッシュの最大容量
-class LfuFloatingListCache<K, I, V> extends EvictingFloatingListCache<K, I, V, LfuCacheEntry<V>, LfuCache<I, V>>{
+class LfuFloatingListCache<K, I, V> extends EvictingFloatingListCach<K, I, V, LfuCacheEntry<V>, LfuCache<I, V>>{
   LfuFloatingListCache({required super.capacity}): super(LfuCache(capacity: capacity));
 
   /// 削除対象決定ロジック
