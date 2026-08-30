@@ -8,6 +8,10 @@ import 'package:flutter/foundation.dart';
 
 /// [BaseListCacheHandler] に [BaseFloatingListCache] の機能を付与したハンドラの
 /// 基底クラス
+///
+/// 付与機能には、[BaseFloatingListCacheHandler.cacheMap] からアクセスする。
+///  - [cacheMap.moveTo]: 指定ID（リストで複数選択可）を、指定の key（第1引数）に移動する
+///
 abstract class BaseFloatingListCacheHandler<
   K,
   I,
@@ -17,9 +21,4 @@ abstract class BaseFloatingListCacheHandler<
   M extends BaseFloatingListCache<K, I, V, Ent, C>
 > extends BaseListCacheHandler<K, I, V, Ent, C, M>{
   BaseFloatingListCacheHandler(super.cacheMap);
-
-  /// ID で指定したエントリを、[key] に移動する
-  ///
-  /// fixme 計算量多め（最大 O(n^2） <= 数個の ID ならほぼ O(n)）
-  void moveTo(K key, {required List<I> orderedId})=> cacheMap.moveTo;
 }
