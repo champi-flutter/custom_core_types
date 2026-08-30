@@ -278,7 +278,7 @@ C extends BaseCache<I, V, Ent>
 
   List<I> _currentIdListAt(K key) => _group.nonNull(key);
 
-  // final Map<I, Ent> _identifier = {};
+  /// 個別のデータのハッシュマップ
   final C _cache;
 
   /// [_cache] へのアクセス
@@ -399,68 +399,6 @@ C extends BaseCache<I, V, Ent>
     }
   }
 
-  /// ID で指定したエントリを、[key] に移動する
-  ///
-  /// fixme 計算量多め（最大 O(n^2））
-  void moveTo(K key, {required List<I> orderedId}) {
-    // 古い key が見つからない場合
-    final List<I> notFound = [];
-    for (I targetId in orderedId) {
-      final K? oldKey = _searchForKeyToMove(targetId);
-      if (oldKey != null) {
-        final List<I> idList = _group[oldKey]!;
-        _group[oldKey]!.remove(targetId);
-        _group.addNullable(key: key, value: targetId);
-      } else {
-        notFound.add(targetId);
-      }
-    }
-    if(notFound.isNotEmpty){
-      throw Exception("[BaseListCache.moveTo] ID が見つかりませんでした。\n - ${notFound.join("\n - ")}");
-    }
-  }
-
-  /// region [moveTo] で古い key を探索するプロセス
-  K? _searchForKeyToMove(I targetId) {
-    for (final groupEntry in _group.entries) {
-      if (groupEntry.value == targetId) {
-        return groupEntry.key;
-      }
-    }
-    return null;
-  }
-  // endregion
-
-  // region fixme replace
-  // /// 指定 [key] に含まれるキャッシュを丸ごと更新する
-  // void replace(K key, Map<I, V> valueMap) {
-  //   // fixme すでに ID が存在するエントリに対しては無効
-  //   final bool isInvalid = valueMap.keys.any(
-  //         (I i) => _identifier.containsKey(i),
-  //   );
-  //   assert(!isInvalid, "[BaseListCache.replace] すでに ID が存在するエントリに対しては無効です。");
-  //   final List<I> currentIdList = _currentIdListAt(key);
-  //   final List<I> removedIdList = currentIdList;
-  //   for (final entry in valueMap.entries) {
-  //     final I targetId = entry.key;
-  //     removedIdList.remove(targetId);
-  //     final V newValue = entry.value;
-  //
-  //     //
-  //     if (!(currentIdList.contains(targetId))) {
-  //       // _group に targetKey を追加
-  //       _group.addNullable(key: key, value: targetId);
-  //     }
-  //     // key に依存しないエントリの値を更新
-  //     _setValue(id: targetId, value: newValue);
-  //   }
-  //   // 指定されなかった ID を key の対象から外す
-  //   for (I removedId in removedIdList) {
-  //     _group[key]?.remove(removedId);
-  //   }
-  // }
-  // endregion
-
   /// 指定 key のキャッシュを削除する
   List<I> remove(K key) {
     final List<I>? removedIds = _group.remove(key);
@@ -496,17 +434,17 @@ C extends BaseCache<I, V, Ent>
   async {
     final List<I> currentIdList = _currentIdListAt(key);
     // 指定された入力値の組み合わせだけ繰り返す
-    for (final MapEntry<int, DataEntry<I, V>> groupEntry in valueMap.entries) {
-      final int index = groupEntry.key;
-      // index が有効かどうか
+    for (final MapEntry<int, DataEntry<I, V>> valueMapEntry in valueMap.entries) {
+      final int index = valueMapEntry.key;
+      // index が指定された場合
       if (index >= 0) {
-        final DataEntry<I, V> dataEntry = groupEntry.value;
+        final DataEntry<I, V> dataEntry = valueMapEntry.value;
         // 識別子
         final I id = dataEntry.id;
         // 入力値
         final V value = dataEntry.value;
         // 指定 index が現段階での index の最後尾を超えている時
-        if (index < currentIdList.length) {
+        if (index >= currentIdList.length) {
           _add(key: key, valueMap: {id: value}, order: order);
         }
         // 指定した場所のデータの ID が一致した場合は、その場所の値を更新する
@@ -520,10 +458,30 @@ C extends BaseCache<I, V, Ent>
         // 指定した場所のデータの ID が一致しないが、指定した ID が存在する場合
         // 　=> index と ID が同期していない（文法エラー）
         else {
-          throw Exception("[BaseListCacheHandler] index と ID が同期していません。");
+          throw Exception("[BaseListCache] 指定 ID のデータが他の Key に存在します。");
         }
-      } else {
-        throw Exception("[BaseListCache] index が指定のリストに対して不適当です。");
+      }
+      // index が指定されなかった（負で指定された場合）場合
+      else {
+        final DataEntry<I, V> dataEntry = valueMapEntry.value;
+        // 識別子
+        final I id = dataEntry.id;
+        // 入力値
+        final V value = dataEntry.value;
+        // key で指定したグループに対象の ID が含まれている場合は、そのIDに対応する値を
+        // 更新する
+        if (currentIdList.contains(id)) {
+          _setValue(id: id, value: value);
+        }
+        // 存在しない ID の場合は、新たなデータをキャッシュに追加する
+        else if (!_cache.containsKey(id)) {
+          _add(key: key, valueMap: {id: value}, order: order);
+        }
+        // 指定した場所のデータの ID が一致しないが、指定した ID が存在する場合
+        // 　=> index と ID が同期していない（文法エラー）
+        else {
+          throw Exception("[BaseListCache] 指定 ID のデータが他の Key に存在します。");
+        }
       }
     }
   }
