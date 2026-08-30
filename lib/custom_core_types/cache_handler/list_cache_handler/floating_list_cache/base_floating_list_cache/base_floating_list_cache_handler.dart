@@ -17,4 +17,9 @@ abstract class BaseFloatingListCacheHandler<
   M extends BaseFloatingListCache<K, I, V, Ent, C>
 > extends BaseListCacheHandler<K, I, V, Ent, C, M>{
   BaseFloatingListCacheHandler(super.cacheMap);
+
+  /// ID で指定したエントリを、[key] に移動する
+  ///
+  /// fixme 計算量多め（最大 O(n^2） <= 数個の ID ならほぼ O(n)）
+  void moveTo(K key, {required List<I> orderedId})=> cacheMap.moveTo;
 }

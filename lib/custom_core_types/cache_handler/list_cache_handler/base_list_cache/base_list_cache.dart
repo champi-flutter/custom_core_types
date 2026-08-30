@@ -320,7 +320,7 @@ C extends BaseCache<I, V, Ent>
   // @protected
   // void removeAt(K key) => _group.remove(key);
 
-  // cache[key] による参照
+  /// key を指定して、対応する値のリストを返す
   @nonVirtual
   List<V> getValuesOf(K key) => _currentIdListAt(key).map((I id) {
     final V? value = _cache[id];
@@ -336,20 +336,22 @@ C extends BaseCache<I, V, Ent>
     return valueList.map((V value) => createEntry(value)).toList();
   }
 
-  /// 指定 [key] に対応する値を全て更新する
-  @nonVirtual
-  void updateByList({required K key, required List<V> valueList}) {
-    final currentIdList = _currentIdListAt(key);
-    assert(
-    valueList.length == currentIdList.length,
-    "[BaseListCache.updateByByList] 要素数が異なります。",
-    );
-    int index = -1;
-    for (I id in currentIdList) {
-      index++;
-      _setValue(id: id, value: valueList[index]);
-    }
-  }
+  // region updateByList
+  // /// 指定 [key] に対応する値を全て更新する
+  // @nonVirtual
+  // void updateByList({required K key, required List<V> valueList}) {
+  //   final currentIdList = _currentIdListAt(key);
+  //   assert(
+  //   valueList.length == currentIdList.length,
+  //   "[BaseListCache.updateByByList] 要素数が異なります。",
+  //   );
+  //   int index = -1;
+  //   for (I id in currentIdList) {
+  //     index++;
+  //     _setValue(id: id, value: valueList[index]);
+  //   }
+  // }
+  // endregion
 
   /// key を指定して、そのリストの index に対応する値をセットする
   ///
