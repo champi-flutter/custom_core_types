@@ -1,7 +1,10 @@
 library custom_core_types;
 
 // custom_core_types
+// called_type_wrapper
 export 'package:custom_core_types/custom_core_types/called_type_wrapper/result.dart';
+export 'package:custom_core_types/custom_core_types/called_type_wrapper/subnullable.dart';
+
 // 2026/06/30 追加
 export 'package:custom_core_types/custom_core_types/non_specified.dart';
 // 2026/06/08 追加: /custom_date_type
