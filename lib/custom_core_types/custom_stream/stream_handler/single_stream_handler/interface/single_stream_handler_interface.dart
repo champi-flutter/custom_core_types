@@ -7,7 +7,8 @@ import 'package:flutter/foundation.dart';
 /// **【使い方】**
 ///  1. アプリのコアの層に、このクラスを継承した、ストリームハンドラのインターフェースを設置
 ///  する。
-///  2. アプリのインフラ層に、ストリームハンドラの具象クラスを設置する（以下を継承）。
+///  2. アプリのインフラ層に、ストリームハンドラの具象クラスを設置する
+///  （以下を継承（このクラスと同じジェネリクスを指定すること））。
 ///     - `SingleStreamHandlerBaseImplementation`
 ///     - `SingleStreamHandlerImplementationWithInitialLoading`
 ///
@@ -15,7 +16,7 @@ abstract class SingleStreamHandlerInterface<T> {
 
   /// ストリームを購読する
   Future<void> listen({
-    required void Function(T data) onData,
+    required FutureOr<void> Function(T data) onData,
     Function? onStreamingError,
     void Function()? onDone,
     bool cancelOnError = false,

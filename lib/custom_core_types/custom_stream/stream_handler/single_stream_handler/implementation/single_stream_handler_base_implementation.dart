@@ -9,7 +9,8 @@ import 'package:rxdart/rxdart.dart';
 /// **【使い方】**
 ///  1. アプリのコアの層に、[SingleStreamHandlerInterface] を継承した、
 ///  ストリームハンドラのインターフェースを設置する。
-///  2. アプリのインフラ層に、このクラスを継承した、ストリームハンドラの具象クラスを設置する。
+///  2. アプリのインフラ層に、このクラス（[SingleStreamHandlerInterface] と同じ
+///  ジェネリクスを指定すること）を継承した、ストリームハンドラの具象クラスを設置する。
 ///
 abstract class SingleStreamHandlerBaseImplementation<T> implements SingleStreamHandlerInterface<T> {
   @nonVirtual
@@ -28,7 +29,7 @@ abstract class SingleStreamHandlerBaseImplementation<T> implements SingleStreamH
   /// ストリームを購読する
   @override
   Future<void> listen({
-    required void Function(T data) onData,
+    required FutureOr<void> Function(T data) onData,
     Function? onStreamingError,
     void Function()? onDone,
     bool cancelOnError = false,
