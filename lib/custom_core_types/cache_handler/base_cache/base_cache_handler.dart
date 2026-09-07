@@ -1,5 +1,6 @@
 import 'package:custom_core_types/custom_core_types/cache_handler/base_cache/base_cache.dart';
 import 'package:custom_core_types/custom_core_types/cache_handler/base_cache/base_cache_entry.dart';
+import 'package:custom_core_types/custom_core_types/cache_handler/interface/cache_handler_base_interface.dart';
 import 'package:flutter/foundation.dart';
 
 /// キャッシュの更新および出力を扱うハンドラの抽象基底クラス
@@ -18,7 +19,7 @@ abstract class BaseCacheHandler<
   K,
   V,
   C extends BaseCache<K, V, BaseCacheEntry<V>>
-> {
+> implements CacheHandlerBaseInterface<K, V>{
   /// 内部で利用するキャッシュデータ構造
   ///
   /// 継承先に対応するキャッシュクラス（[BaseCache] を継承）のコンストラクタを
@@ -46,6 +47,7 @@ abstract class BaseCacheHandler<
   /// key（[dataMap.keys]）に対応する値を [dataMap.values] に更新する。
   ///
   /// 反映の完了まで待ちたい場合は、`await` をつけるとよい。
+  @override
   Future<void> update(Map<K, V> dataMap) async {
     for (final entry in dataMap.entries) {
       _cache[entry.key] = entry.value;
@@ -54,6 +56,7 @@ abstract class BaseCacheHandler<
   }
 
   /// 更新後の状態を出力する抽象メソッド（継承先で実装）
+  @override
   @protected
   @visibleForOverriding
   Future<void> output(Map<K, V> dataMap);

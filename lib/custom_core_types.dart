@@ -21,6 +21,11 @@ export 'package:custom_core_types/custom_core_types/custom_stream/stream_handler
 export 'package:custom_core_types/custom_core_types/custom_stream/stream_handler/single_stream_handler/implementation/single_stream_handler_implementation_with_initial_loading.dart';
 
 // 2026/08/13 追加: /cache_handler
+export 'package:custom_core_types/custom_core_types/cache_handler/value_type/data_entry.dart';
+
+export 'package:custom_core_types/custom_core_types/cache_handler/interface/cache_handler_base_interface.dart';
+export 'package:custom_core_types/custom_core_types/cache_handler/interface/list_cache_handler_base_interface.dart';
+
 export 'package:custom_core_types/custom_core_types/cache_handler/base_cache/base_cache.dart';
 export 'package:custom_core_types/custom_core_types/cache_handler/base_cache/base_cache_entry.dart';
 export 'package:custom_core_types/custom_core_types/cache_handler/base_cache/base_cache_handler.dart';

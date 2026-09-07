@@ -10,9 +10,9 @@ abstract class BaseListCacheEntry<El> {
   bool onAccess();
 }
 
-class Identified<El>{
-  final int id;
-  El element;
-
-  Identified(this.element, {required this.id});
-}
+// class Identified<El>{
+//   final int id;
+//   El element;
+//
+//   Identified(this.element, {required this.id});
+// }
