@@ -25,6 +25,7 @@ export 'package:custom_core_types/custom_core_types/cache_handler/value_type/dat
 
 export 'package:custom_core_types/custom_core_types/cache_handler/interface/cache_handler_base_interface.dart';
 export 'package:custom_core_types/custom_core_types/cache_handler/interface/list_cache_handler_base_interface.dart';
+export 'package:custom_core_types/custom_core_types/cache_handler/interface/floating_list_cache_handler_base_interface.dart';
 
 export 'package:custom_core_types/custom_core_types/cache_handler/base_cache/base_cache.dart';
 export 'package:custom_core_types/custom_core_types/cache_handler/base_cache/base_cache_entry.dart';
