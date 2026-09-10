@@ -1,8 +1,6 @@
-
 import 'package:custom_core_types/custom_core_types.dart';
 
-abstract interface class ListCacheHandlerBaseInterface<K, I, V> {
-
+abstract class ListCacheHandlerBaseInterface<K, I, V> {
   /// 指定 [key] のリストの指定 [index] に [value] を代入する
   ///
   /// ```
