@@ -58,7 +58,9 @@ export 'package:custom_core_types/custom_core_types/cache_handler/list_cache_han
 
 
 // 2026/08/19 追加: /custom_collection
-export 'package:custom_core_types/custom_core_types/custom_collection//bi_map.dart';
+export 'package:custom_core_types/custom_core_types/custom_collection/bi_map.dart';
+export 'package:custom_core_types/custom_core_types/custom_collection/fixed_list.dart';
+export 'package:custom_core_types/custom_core_types/custom_collection/group.dart';
 
 // extended_core
 export 'package:custom_core_types/extended_core/date_time_options.dart';
