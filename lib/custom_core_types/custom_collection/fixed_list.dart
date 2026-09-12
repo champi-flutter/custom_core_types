@@ -1,5 +1,7 @@
 import 'dart:collection';
 
+import 'package:collection/collection.dart';
+
 import 'package:flutter/foundation.dart';
 
 /// 要素数が固定で、各要素が index を保持するリストの基底クラス
@@ -112,4 +114,30 @@ extension ToFixedList<E> on Iterable<E> {
   /// [FixedList] の継承先リストの、[] を引数に取るコンストラクタを当てはめる。
   R toListAs<R extends FixedList>(R Function(Iterable<E>) constructor) =>
       constructor(this);
+}
+
+extension UnorderedIterableEqualityExtension<T> on Iterable<T> {
+  /// 順不同で Iterable の中身が等しいか判定する
+  bool isUnorderedEqualTo(Iterable<T> other) {
+    final equality = UnorderedIterableEquality<T>();
+    return equality.equals(this, other);
+  }
+}
+
+extension FixedListUnorderedEqualityExtension<E> on FixedList<E> {
+  /// [FixedList] の内部の値を、他の List や FixedList と順不同で比較する
+  bool isUnorderedEqualTo(Object other) {
+    final Iterable<E> otherIterable;
+
+    if (other is FixedList<E>) {
+      otherIterable = other.mapValues((e) => e);
+    } else if (other is Iterable<E>) {
+      otherIterable = other;
+    } else {
+      return false;
+    }
+
+    // FixedList 内の ListEntry.value (E) を抽出して比較する
+    return mapValues((e) => e).isUnorderedEqualTo(otherIterable);
+  }
 }
