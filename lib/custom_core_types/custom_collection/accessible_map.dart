@@ -12,7 +12,7 @@ class AccessibleMap<K, V> extends MapBase<K, V> {
 
   final void Function(K key) onAccessWithNew;
 
-  final V placeholder;
+  final V Function(K key) placeholder;
 
   @override
   V operator [](Object? key) {
@@ -20,7 +20,7 @@ class AccessibleMap<K, V> extends MapBase<K, V> {
       final V? value = _map[key];
       if (value == null) {
         onAccessWithNew(key);
-        return placeholder;
+        return placeholder(key);
       } else {
         return value;
       }
