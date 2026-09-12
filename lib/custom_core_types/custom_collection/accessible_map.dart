@@ -1,5 +1,7 @@
 import 'dart:collection';
 
+import 'package:flutter/foundation.dart';
+
 /// 新しい key にアクセスした際に、取得処理を走らせる Map
 class AccessibleMap<K, V> extends MapBase<K, V> {
   AccessibleMap({
@@ -10,9 +12,16 @@ class AccessibleMap<K, V> extends MapBase<K, V> {
 
   final Map<K, V> _map;
 
+  /// まだ値の入っていない key にアクセスされたときのコールバック
+  @protected
   final void Function(K key) onAccessWithNew;
 
+  /// [onAccessWithNew] が呼ばれている間に入れる仮データ
+  @protected
   final V Function(K key) placeholder;
+
+  /// 現在、値が保持されている key の集合を取得する
+  Set<K> get activeKeys => _map.keys.toSet();
 
   @override
   V operator [](Object? key) {
