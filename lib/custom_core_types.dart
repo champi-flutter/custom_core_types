@@ -61,6 +61,7 @@ export 'package:custom_core_types/custom_core_types/cache_handler/list_cache_han
 export 'package:custom_core_types/custom_core_types/custom_collection/bi_map.dart';
 export 'package:custom_core_types/custom_core_types/custom_collection/fixed_list.dart';
 export 'package:custom_core_types/custom_core_types/custom_collection/group.dart';
+export 'package:custom_core_types/custom_core_types/custom_collection/accessible_map.dart';
 
 // extended_core
 export 'package:custom_core_types/extended_core/date_time_options.dart';
