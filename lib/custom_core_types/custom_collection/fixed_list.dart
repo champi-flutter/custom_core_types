@@ -110,6 +110,6 @@ extension ToFixedList<E> on Iterable<E> {
   /// [Iterable] を [FixedList] の継承先リストに変換する
   ///
   /// [FixedList] の継承先リストの、[] を引数に取るコンストラクタを当てはめる。
-  R to<R extends FixedList>(R Function(Iterable<E>) constructor) =>
+  R toListAs<R extends FixedList>(R Function(Iterable<E>) constructor) =>
       constructor(this);
 }
