@@ -1,5 +1,7 @@
 import 'dart:collection';
 
+import 'package:flutter/foundation.dart';
+
 /// 要素数が固定で、各要素が index を保持するリストの基底クラス
 ///
 /// 継承先で [length] を指定し、`.fill` と `.fromIterable` の両方のコンストラクタを
@@ -77,6 +79,23 @@ abstract class FixedList<E> extends ListBase<ListEntry<E>> {
   Iterable<R> mapValues<R>(R Function(E value) convert) {
     return _list.map((entry) => convert(entry.value));
   }
+
+  /// [ListBase] が持つ、元の [toList]
+  ///
+  /// 外部からの呼び出しを制限している。
+  @override
+  @protected
+  List<ListEntry<E>> toList({bool growable = false}) => _list;
+
+  /// 要素のリストを取得する
+  ///
+  /// [growable] は `false` 。
+  List<E> toValueList() =>
+      _list.map((entry) => entry.value).toList(growable: false);
+
+  /// エントリのリストを取得する
+  /// [growable] は `false` 。
+  List<ListEntry<E>> toEntryList() => toList(growable: false);
 }
 
 /// [FixedList] のインデックスと要素の組み合わせ
@@ -93,18 +112,4 @@ extension ToFixedList<E> on Iterable<E> {
   /// [FixedList] の継承先リストの、[] を引数に取るコンストラクタを当てはめる。
   R to<R extends FixedList>(R Function(Iterable<E>) constructor) =>
       constructor(this);
-}
-
-const int sampleListLength = 3;
-
-class SampleFixedList<E> extends FixedList<E> {
-  SampleFixedList.fill(E Function(int index) fill)
-    : super.fill(sampleListLength, fill);
-
-  SampleFixedList.fromIterable(Iterable<E> iterable)
-    : assert(
-        iterable.length == sampleListLength,
-        "[SampleFixedList.fromIterable] 要素数が不適当です",
-      ),
-      super.fromIterable(sampleListLength, iterable);
 }
