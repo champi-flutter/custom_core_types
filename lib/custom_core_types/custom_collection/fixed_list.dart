@@ -1,29 +1,53 @@
-
 import 'dart:collection';
 
 /// 要素数が固定で、各要素が index を保持するリストの基底クラス
 ///
-/// 以下のように、継承先で [length] を指定する 。
+/// 継承先で [length] を指定し、`.fill` と `.fromIterable` の両方のコンストラクタを
+/// 設置すること。
 /// ```
+/// const int sampleListLength = 3;
+///
 /// class SampleFixedList<E> extends FixedList<E> {
-///   SampleFixedList(List<E> list)
-///       : super(list.length, (i) => list[i]);
+///   SampleFixedList.fill(E Function(int index) fill)
+///       : super.fill(sampleListLength, fill);
+///
+///   SampleFixedList.fromIterable(Iterable<E> iterable)
+///       : assert(
+///     iterable.length == sampleListLength,
+///     "[SampleFixedList.fromIterable] 要素数が不適当です",
+///   ),
+///         super.fromIterable(sampleListLength, iterable);
 /// }
 /// ```
 abstract class FixedList<E> extends ListBase<ListEntry<E>> {
   final List<ListEntry<E>> _list;
 
-  FixedList(int length, E Function(int index) fill)
-      : _list = List.generate(
-    length,
+  /// インデックスに対する要素の生成関数を指定するコンストラクタ
+  FixedList.fill(int length, E Function(int index) fill)
+    : _list = List.generate(
+        length,
         (i) => ListEntry._(i, fill(i)),
-    growable: false, // 固定長化
-  );
+        growable: false, // 固定長化
+      );
 
-  /// Iterable から FixedList を生成するファクトリコンストラクタ
-  factory FixedList._fromIterable(Iterable<E> iterable) {
-    final list = iterable.toList(growable: false);
-    return _FixedListFromList._(list);
+  /// [Iterable] から [FixedList] を生成するコンストラクタ
+  FixedList.fromIterable(int length, Iterable<E> iterable)
+    : _list = _buildFromIterable(length, iterable);
+
+  static List<ListEntry<T>> _buildFromIterable<T>(
+    int length,
+    Iterable<T> iterable,
+  )
+  // 折りたたみ用
+  {
+    final List<T> list = iterable is List<T>
+        ? iterable
+        : iterable.toList(growable: false);
+    return List.generate(
+      length,
+      (i) => ListEntry._(i, list[i]),
+      growable: false,
+    );
   }
 
   @override
@@ -39,7 +63,7 @@ abstract class FixedList<E> extends ListBase<ListEntry<E>> {
   ListEntry<E> operator [](int index) => _list[index];
 
   /// 指定 [index] に値を代入する
-  void setAt(int index, E newElement){
+  void setAt(int index, E newElement) {
     this[index].value = newElement;
   }
 
@@ -63,13 +87,24 @@ class ListEntry<E> {
   ListEntry._(this.index, this.value);
 }
 
-/// 変換メソッドのためのプライベートクラス
-class _FixedListFromList<E> extends FixedList<E> {
-  _FixedListFromList._(List<E> list)
-      : super(list.length, (i) => list[i]);
+extension ToFixedList<E> on Iterable<E> {
+  /// [Iterable] を [FixedList] の継承先リストに変換する
+  ///
+  /// [FixedList] の継承先リストの、[] を引数に取るコンストラクタを当てはめる。
+  R to<R extends FixedList>(R Function(Iterable<E>) constructor) =>
+      constructor(this);
 }
 
-extension ToFixedList<E> on Iterable<E> {
-  /// [Iterable] を [FixedList] に変換する
-  FixedList<E> toFixedList() => FixedList._fromIterable(this);
+const int sampleListLength = 3;
+
+class SampleFixedList<E> extends FixedList<E> {
+  SampleFixedList.fill(E Function(int index) fill)
+    : super.fill(sampleListLength, fill);
+
+  SampleFixedList.fromIterable(Iterable<E> iterable)
+    : assert(
+        iterable.length == sampleListLength,
+        "[SampleFixedList.fromIterable] 要素数が不適当です",
+      ),
+      super.fromIterable(sampleListLength, iterable);
 }
