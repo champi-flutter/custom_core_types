@@ -3,8 +3,8 @@ import 'dart:collection';
 import 'package:flutter/foundation.dart';
 
 /// 新しい key にアクセスした際に、取得処理を走らせる Map
-class AccessibleMap<K, V> extends MapBase<K, V> {
-  AccessibleMap({
+class LazyMap<K, V> extends MapBase<K, V> {
+  LazyMap({
     Map<K, V>? initialData,
     required this.onAccessWithNew,
     required this.placeholder,
@@ -53,9 +53,9 @@ class AccessibleMap<K, V> extends MapBase<K, V> {
   V? remove(Object? key) => _map.remove(key);
 
   /// 自身を複製するメソッド
-  AccessibleMap<K, V> copyWith(K key, V value) {
+  LazyMap<K, V> copyWith(K key, V value) {
     final newMap = Map<K, V>.from(_map)..[key] = value;
-    return AccessibleMap(
+    return LazyMap(
       initialData: newMap,
       onAccessWithNew: onAccessWithNew,
       placeholder: placeholder,
