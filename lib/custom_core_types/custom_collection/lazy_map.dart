@@ -52,7 +52,7 @@ class LazyMap<K, V> extends MapBase<K, V> {
   @override
   V? remove(Object? key) => _map.remove(key);
 
-  /// 自身を複製するメソッド
+  /// 自身の一部を更新して、複製した [LazyMap] の新しい枠を返すメソッド
   LazyMap<K, V> copyWith(K key, V value) {
     final newMap = Map<K, V>.from(_map)..[key] = value;
     return LazyMap(
@@ -61,4 +61,11 @@ class LazyMap<K, V> extends MapBase<K, V> {
       placeholder: placeholder,
     );
   }
+
+  /// 自身を更新して、複製した [LazyMap] の新しい枠を返すメソッド
+  LazyMap<K, V> copyAs(Map<K, V> newMap) => LazyMap(
+    initialData: newMap,
+    onAccessWithNew: onAccessWithNew,
+    placeholder: placeholder,
+  );
 }
