@@ -55,8 +55,11 @@ abstract class BaseCacheHandler<
     await output(_cache.base);
   }
 
-  /// 更新後の状態を出力する抽象メソッド（継承先で実装）
+  /// 指定 [key] のデータにアクセスされたことを伝える
   @override
+  void notifyAccess({required K key})=> _cache.notifyAccess(key: key);
+
+  /// 更新後の状態を出力する抽象メソッド（継承先で実装）
   @protected
   @visibleForOverriding
   Future<void> output(Map<K, V> dataMap);

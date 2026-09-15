@@ -9,4 +9,7 @@ abstract interface class CacheHandlerBaseInterface<K, V> {
   ///
   /// 反映の完了まで待ちたい場合は、`await` をつけるとよい。
   Future<void> update(Map<K, V> dataMap);
+
+  /// 指定 [key] のキャッシュに対応する値がアクセスされたことを伝える
+  void notifyAccess({required K key});
 }

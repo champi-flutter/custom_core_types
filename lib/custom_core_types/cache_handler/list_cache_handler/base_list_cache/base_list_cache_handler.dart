@@ -86,6 +86,10 @@ abstract class BaseListCacheHandler<
     }
   }
 
+  /// 指定 [key] のデータにアクセスされたことを伝える
+  @override
+  void notifyAccess({required K key})=> _cacheMap.notifyAccess(key: key);
+
   /// 更新後の状態を出力する抽象メソッド（継承先で実装）
   @protected
   @visibleForOverriding

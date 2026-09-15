@@ -229,6 +229,17 @@ C extends BaseCache<I, V, Ent>
     }
   }
 
+  /// 指定 [key] のデータにアクセスされたことを伝える
+  void notifyAccess({required K key}) {
+    // 指定 key に含まれるすべてのキャッシュにアクセスを知らせる
+    final targetGroup = _group[key];
+    if(targetGroup != null) {
+      for(final I id in targetGroup){
+        _cache.notifyAccess(key: id);
+      }
+    }
+  }
+
   /// 全データを純粋な `Map<K, List<V>>` の形
   ///
   /// fixme O(n^2)

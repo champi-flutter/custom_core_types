@@ -25,4 +25,7 @@ abstract class ListCacheHandlerBaseInterface<K, I, V> {
     required Map<K, Map<int, DataEntry<I, V>>> updateInfo,
     Map<K, List<I>?>? orderMap,
   });
+
+  /// 指定 [key] のキャッシュに対応する値がアクセスされたことを伝える
+  void notifyAccess({required K key});
 }
