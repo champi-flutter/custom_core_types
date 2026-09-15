@@ -6,7 +6,8 @@ import 'package:flutter/foundation.dart';
 class LazyMap<K, V> extends MapBase<K, V> {
   LazyMap({
     Map<K, V>? initialData,
-    required this.onAccessWithNew,
+    required this.onAnyAccess,
+    required this.onNewAccess,
     required this.placeholder,
   }) : _map = Map<K, V>.of(initialData ?? {});
 
@@ -14,7 +15,11 @@ class LazyMap<K, V> extends MapBase<K, V> {
 
   /// まだ値の入っていない key にアクセスされたときのコールバック
   @protected
-  final void Function(K key) onAccessWithNew;
+  final void Function(K key) onNewAccess;
+
+  /// まだ値の入っていない key にアクセスされたときのコールバック
+  @protected
+  final void Function(K key) onAnyAccess;
 
   /// [onAccessWithNew] が呼ばれている間に入れる仮データ
   @protected
@@ -26,11 +31,15 @@ class LazyMap<K, V> extends MapBase<K, V> {
   @override
   V operator [](Object? key) {
     if (key is K) {
+      onAnyAccess(key);
       final V? value = _map[key];
+      // まだ登録されていない key にアクセスされた場合
       if (value == null) {
-        onAccessWithNew(key);
+        onNewAccess(key);
         return placeholder(key);
-      } else {
+      }
+      // すでに値がある場合はそれを返す
+      else {
         return value;
       }
     } else {
