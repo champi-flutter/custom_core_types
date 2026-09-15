@@ -21,7 +21,8 @@ abstract class BaseListCacheHandler<
   Ent extends BaseCacheEntry<V>,
   C extends BaseCache<I, V, Ent>,
   M extends BaseListCache<K, I, V, Ent, C>
-> implements ListCacheHandlerBaseInterface<K, I, V>{
+>
+    implements ListCacheHandlerBaseInterface<K, I, V> {
   BaseListCacheHandler(this._cacheMap);
 
   final M _cacheMap;
@@ -57,6 +58,32 @@ abstract class BaseListCacheHandler<
     await _cacheMap.update(key: key, valueMap: valueMap, order: order);
 
     await output(_cacheMap.base);
+  }
+
+  /// 複数の [update] を `Map` で指定して呼び出す
+  @override
+  Future<void> updateByMap({
+    required Map<K, Map<int, DataEntry<I, V>>> updateInfo,
+    Map<K, List<I>?>? orderMap,
+  }) async {
+    // 繰り返し処理を待ってから output する
+    await _asyncUpdateByMap(updateInfo, orderMap);
+
+    await output(_cacheMap.base);
+  }
+
+  /// [updateByMap] の繰り返し処理のまとまりを非同期で進める
+  Future<void> _asyncUpdateByMap(
+    Map<K, Map<int, DataEntry<I, V>>> updateInfo,
+    Map<K, List<I>?>? orderMap,
+  )
+  // 折りたたみ用
+  async {
+    for (final entry in updateInfo.entries) {
+      final K key = entry.key;
+      final Map<int, DataEntry<I, V>> valueMap = entry.value;
+      _cacheMap.update(key: key, valueMap: valueMap, order: orderMap?[key]);
+    }
   }
 
   /// 更新後の状態を出力する抽象メソッド（継承先で実装）

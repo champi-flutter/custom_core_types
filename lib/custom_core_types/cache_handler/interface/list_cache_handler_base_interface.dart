@@ -19,4 +19,10 @@ abstract class ListCacheHandlerBaseInterface<K, I, V> {
     required Map<int, DataEntry<I, V>> valueMap,
     List<I>? order,
   });
+
+  /// 複数の [update] を `Map` で指定して呼び出す
+  Future<void> updateByMap({
+    required Map<K, Map<int, DataEntry<I, V>>> updateInfo,
+    Map<K, List<I>?>? orderMap,
+  });
 }

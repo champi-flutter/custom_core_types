@@ -8,7 +8,7 @@ class LazyMap<K, V> extends MapBase<K, V> {
     Map<K, V>? initialData,
     required this.onAccessWithNew,
     required this.placeholder,
-  }) : _map = Map<K, V>.from(initialData ?? {});
+  }) : _map = Map<K, V>.of(initialData ?? {});
 
   final Map<K, V> _map;
 
@@ -54,7 +54,7 @@ class LazyMap<K, V> extends MapBase<K, V> {
 
   /// 自身の一部を更新して、複製した [LazyMap] の新しい枠を返すメソッド
   LazyMap<K, V> copyWith(K key, V value) {
-    final newMap = Map<K, V>.from(_map)..[key] = value;
+    final newMap = Map<K, V>.of(_map)..[key] = value;
     return LazyMap(
       initialData: newMap,
       onAccessWithNew: onAccessWithNew,
