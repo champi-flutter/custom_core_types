@@ -2,7 +2,7 @@ import 'dart:collection';
 
 import 'package:flutter/foundation.dart';
 
-/// 新しい key にアクセスした際に、取得処理を走らせる Map
+/// 新しい key にアクセスした際に、取得処理（[onNewAccess]）を走らせる Map
 class LazyMap<K, V> extends MapBase<K, V> {
   LazyMap({
     Map<K, V>? initialData,
@@ -66,7 +66,8 @@ class LazyMap<K, V> extends MapBase<K, V> {
     final newMap = Map<K, V>.of(_map)..[key] = value;
     return LazyMap(
       initialData: newMap,
-      onAccessWithNew: onAccessWithNew,
+      onAnyAccess: onAnyAccess,
+      onNewAccess: onNewAccess,
       placeholder: placeholder,
     );
   }
@@ -74,7 +75,8 @@ class LazyMap<K, V> extends MapBase<K, V> {
   /// 自身を更新して、複製した [LazyMap] の新しい枠を返すメソッド
   LazyMap<K, V> copyAs(Map<K, V> newMap) => LazyMap(
     initialData: newMap,
-    onAccessWithNew: onAccessWithNew,
+    onAnyAccess: onAnyAccess,
+    onNewAccess: onNewAccess,
     placeholder: placeholder,
   );
 }
