@@ -51,6 +51,8 @@ C extends BaseCache<I, V, Ent>
 
   bool containsKey(K key) => _group.containsKey(key);
 
+  bool containsId(I id)=> _cache.containsKey(id);
+
   /// ストレージの参照
   @nonVirtual
   @protected
