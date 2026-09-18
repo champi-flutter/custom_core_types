@@ -103,6 +103,10 @@ abstract class FixedList<E> extends ListBase<ListEntry<E>> {
   ///
   /// 継承先で override
   FixedList<E> get deepCopy;
+
+  /// [deepCopy] 用のコンストラクタ。継承先の内部でのみ呼び出し可能。
+  @protected
+  FixedList.copy(List<ListEntry<E>> list): _list = list;
 }
 
 /// [FixedList] のインデックスと要素の組み合わせ
