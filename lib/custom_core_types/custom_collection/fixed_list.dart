@@ -98,6 +98,11 @@ abstract class FixedList<E> extends ListBase<ListEntry<E>> {
   /// エントリのリストを取得する
   /// [growable] は `false` 。
   List<ListEntry<E>> toEntryList() => toList(growable: false);
+
+  /// 同じ情報を持つ別の新しいインスタンスを生成する
+  ///
+  /// 継承先で override
+  FixedList<E> get deepCopy;
 }
 
 /// [FixedList] のインデックスと要素の組み合わせ
