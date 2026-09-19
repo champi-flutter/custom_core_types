@@ -1,5 +1,4 @@
 
-import 'package:flutter/foundation.dart';
 
 abstract interface class CacheHandlerBaseInterface<K, V> {
 

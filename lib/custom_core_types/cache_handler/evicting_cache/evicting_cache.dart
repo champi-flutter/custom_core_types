@@ -2,7 +2,6 @@
 
 import 'package:custom_core_types/custom_core_types/cache_handler/base_cache/base_cache.dart';
 import 'package:custom_core_types/custom_core_types/cache_handler/base_cache/base_cache_entry.dart';
-import 'package:custom_core_types/custom_core_types/cache_handler/base_cache/base_cache_handler.dart';
 import 'package:flutter/foundation.dart';
 
 /// 容量超過時の削除機能を搭載するキャッシュの基底クラス
@@ -13,15 +12,9 @@ abstract class EvictingCache<K, V, E extends BaseCacheEntry<V>> extends BaseCach
   /// キャッシュの最大容量
   final int capacity;
 
-  // /// イベントの呼び出し口
-  // ///
-  // /// イベントのロジックは、[CacheEviction] を実装したクラスで記述すること。
-  // final CacheEviction<K, V, E> _event;
-
-  EvictingCache({required this.capacity,
-    // required CacheEviction<K, V, E> event,
+  EvictingCache({
+    required this.capacity,
   });
-      // : _event = event;
 
   @override
   @protected

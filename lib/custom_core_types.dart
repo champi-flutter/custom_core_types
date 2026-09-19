@@ -33,6 +33,7 @@ export 'package:custom_core_types/custom_core_types/cache_handler/base_cache/bas
 export 'package:custom_core_types/custom_core_types/cache_handler/simple_cache/simple_cache.dart';
 export 'package:custom_core_types/custom_core_types/cache_handler/simple_cache/simple_cache_entry.dart';
 export 'package:custom_core_types/custom_core_types/cache_handler/simple_cache/simple_cache_handler.dart';
+// evicting_cache
 export 'package:custom_core_types/custom_core_types/cache_handler/evicting_cache/evicting_cache.dart';
 export 'package:custom_core_types/custom_core_types/cache_handler/evicting_cache/lfu/lfu_cache.dart';
 export 'package:custom_core_types/custom_core_types/cache_handler/evicting_cache/lfu/lfu_cache_entry.dart';
@@ -40,9 +41,16 @@ export 'package:custom_core_types/custom_core_types/cache_handler/evicting_cache
 export 'package:custom_core_types/custom_core_types/cache_handler/evicting_cache/fifo/fifo_cache.dart';
 export 'package:custom_core_types/custom_core_types/cache_handler/evicting_cache/fifo/fifo_cache_entry.dart';
 export 'package:custom_core_types/custom_core_types/cache_handler/evicting_cache/fifo/fifo_cache_handler.dart';
+// expirable_cache
+export 'package:custom_core_types/custom_core_types/cache_handler/expirable_cache/expirable_cache.dart';
+export 'package:custom_core_types/custom_core_types/cache_handler/expirable_cache/ttl/ttl_cache.dart';
+export 'package:custom_core_types/custom_core_types/cache_handler/expirable_cache/ttl/ttl_cache_entry.dart';
+export 'package:custom_core_types/custom_core_types/cache_handler/expirable_cache/ttl/ttl_cache_handler.dart';
+// list_cache
 export 'package:custom_core_types/custom_core_types/cache_handler/list_cache_handler/base_list_cache/base_list_cache.dart';
 export 'package:custom_core_types/custom_core_types/cache_handler/list_cache_handler/base_list_cache/base_list_cache_entry.dart';
 export 'package:custom_core_types/custom_core_types/cache_handler/list_cache_handler/base_list_cache/base_list_cache_handler.dart';
+// evicting_list_cache
 export 'package:custom_core_types/custom_core_types/cache_handler/list_cache_handler/evicting_list_cache/evicting_list_cache.dart';
 export 'package:custom_core_types/custom_core_types/cache_handler/list_cache_handler/evicting_list_cache/lfu/lfu_list_cache.dart';
 export 'package:custom_core_types/custom_core_types/cache_handler/list_cache_handler/evicting_list_cache/lfu/lfu_list_cache_entry.dart';
@@ -50,6 +58,7 @@ export 'package:custom_core_types/custom_core_types/cache_handler/list_cache_han
 export 'package:custom_core_types/custom_core_types/cache_handler/list_cache_handler/evicting_list_cache/fifo/fifo_list_cache.dart';
 export 'package:custom_core_types/custom_core_types/cache_handler/list_cache_handler/evicting_list_cache/fifo/fifo_list_cache_entry.dart';
 export 'package:custom_core_types/custom_core_types/cache_handler/list_cache_handler/evicting_list_cache/fifo/fifo_list_cache_handler.dart';
+// floating_list_cache
 export 'package:custom_core_types/custom_core_types/cache_handler/list_cache_handler/floating_list_cache/base_floating_list_cache/base_floating_list_cache.dart';
 export 'package:custom_core_types/custom_core_types/cache_handler/list_cache_handler/floating_list_cache/base_floating_list_cache/base_floating_list_cache_handler.dart';
 export 'package:custom_core_types/custom_core_types/cache_handler/list_cache_handler/floating_list_cache/evicting_floating_list_cache/evicting_floating_list_cache.dart';

@@ -38,6 +38,7 @@ class LfuListCache<K, I, V> extends EvictingListCache<K, I, V, LfuCacheEntry<V>,
 
 /// [LfuCacheEntry] をリストで扱うための拡張メソッド
 extension EvictionLfuList<V> on Iterable<LfuCacheEntry<V>>{
+  /// [LfuListCache] の key 単位でのアクセス頻度
   int get freqOfList{
     int result = 0;
     forEach((entry)=>result + entry.frequency);
