@@ -34,4 +34,17 @@ abstract class ListCacheHandlerBaseInterface<K, I, V> {
 
   /// 指定 [id] のデータがキャッシュされているかどうか
   bool containsId(I id);
+
+  /// キャッシュされている指定 [key] のグループを List で返す
+  ///
+  /// キャッシュされていない場合は、 `null` をかえす。
+  List<V>? getGroup(K key);
+
+  /// キャッシュされている指定 [id] の値を返す
+  ///
+  /// キャッシュされていない場合は、 `null` をかえす。
+  V? getValue(I id);
+
+  /// 現時点でのキャッシュを Map で返す
+  Map<K, List<V>> getAll();
 }

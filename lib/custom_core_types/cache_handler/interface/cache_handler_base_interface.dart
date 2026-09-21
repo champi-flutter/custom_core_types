@@ -14,4 +14,12 @@ abstract interface class CacheHandlerBaseInterface<K, V> {
 
   /// 指定 [key] のデータがキャッシュされているかどうか
   bool containsKey(K key);
+
+  /// キャッシュされている指定 [key] の値を返す
+  ///
+  /// キャッシュされていない場合は、 `null` をかえす。
+  V? getAt(K key);
+
+  /// 現時点でのキャッシュを Map で返す
+  Map<K, V> getAll();
 }

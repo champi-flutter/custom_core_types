@@ -63,6 +63,10 @@ C extends BaseCache<I, V, Ent>
   // @protected
   // void removeAt(K key) => _group.remove(key);
 
+  /// [id] を指定して、対応する値を返す
+  @nonVirtual
+  V? getValue(I id) => _cache[id];
+
   /// key を指定して、対応する値のリストを返す
   @nonVirtual
   List<V> getValuesOf(K key) => _currentIdListAt(key).map((I id) {

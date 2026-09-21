@@ -67,4 +67,14 @@ abstract class BaseCacheHandler<
   @protected
   @visibleForOverriding
   Future<void> output(Map<K, V> dataMap);
+
+  /// キャッシュされている指定 [key] の値を返す
+  ///
+  /// キャッシュされていない場合は、 `null` をかえす。
+  @override
+  V? getAt(K key)=>_cache[key];
+
+  /// 現時点でのキャッシュを Map で返す
+  @override
+  Map<K, V> getAll()=> _cache.base;
 }

@@ -102,4 +102,20 @@ abstract class BaseListCacheHandler<
   @protected
   @visibleForOverriding
   Future<void> output(Map<K, List<V>> dataMap);
+
+  /// キャッシュされている指定 [key] のグループを List で返す
+  ///
+  /// キャッシュされていない場合は、 `null` をかえす。
+  @override
+  List<V>? getGroup(K key) => _cacheMap.getValuesOf(key);
+
+  /// キャッシュされている指定 [id] の値を返す
+  ///
+  /// キャッシュされていない場合は、 `null` をかえす。
+  @override
+  V? getValue(I id) => _cacheMap.getValue(id);
+
+  /// 現時点でのキャッシュを Map で返す
+  @override
+  Map<K, List<V>> getAll() => _cacheMap.base;
 }
