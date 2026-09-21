@@ -46,6 +46,10 @@ export 'package:custom_core_types/custom_core_types/cache_handler/expirable_cach
 export 'package:custom_core_types/custom_core_types/cache_handler/expirable_cache/ttl/ttl_cache.dart';
 export 'package:custom_core_types/custom_core_types/cache_handler/expirable_cache/ttl/ttl_cache_entry.dart';
 export 'package:custom_core_types/custom_core_types/cache_handler/expirable_cache/ttl/ttl_cache_handler.dart';
+export 'package:custom_core_types/custom_core_types/cache_handler/expirable_cache/ttl/expiration_timer.dart';
+export 'package:custom_core_types/custom_core_types/cache_handler/expirable_cache/sliding_ttl/sliding_ttl_cache.dart';
+export 'package:custom_core_types/custom_core_types/cache_handler/expirable_cache/sliding_ttl/sliding_ttl_cache_entry.dart';
+export 'package:custom_core_types/custom_core_types/cache_handler/expirable_cache/sliding_ttl/sliding_ttl_cache_handler.dart';
 // list_cache
 export 'package:custom_core_types/custom_core_types/cache_handler/list_cache_handler/base_list_cache/base_list_cache.dart';
 export 'package:custom_core_types/custom_core_types/cache_handler/list_cache_handler/base_list_cache/base_list_cache_entry.dart';
