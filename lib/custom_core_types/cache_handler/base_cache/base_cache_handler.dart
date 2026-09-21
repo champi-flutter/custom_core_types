@@ -59,6 +59,10 @@ abstract class BaseCacheHandler<
   @override
   void notifyAccess({required K key})=> _cache.notifyAccess(key: key);
 
+  /// 指定 [key] のデータがキャッシュされているかどうか
+  @override
+  bool containsKey(K key) => _cache.containsKey(key);
+
   /// 更新後の状態を出力する抽象メソッド（継承先で実装）
   @protected
   @visibleForOverriding

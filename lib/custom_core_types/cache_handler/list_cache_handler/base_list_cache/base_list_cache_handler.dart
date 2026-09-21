@@ -90,6 +90,14 @@ abstract class BaseListCacheHandler<
   @override
   void notifyAccess({required K key})=> _cacheMap.notifyAccess(key: key);
 
+  /// 指定 [key] のデータがキャッシュされているかどうか
+  @override
+  bool containsKey(K key) => _cacheMap.containsKey(key);
+
+  /// 指定 [id] のデータがキャッシュされているかどうか
+  @override
+  bool containsId(I id)=> _cacheMap.containsId(id);
+
   /// 更新後の状態を出力する抽象メソッド（継承先で実装）
   @protected
   @visibleForOverriding

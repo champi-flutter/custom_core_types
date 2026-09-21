@@ -15,8 +15,6 @@ class TtlCache<K, V> extends BaseCache<K, V, TtlCacheEntry<V>> {
   /// キャッシュの有効期限（秒）
   final int timeToLive;
 
-  // todo expirationTimer を誰がどう持つか？（2026/09/19）＞＞
-
   @override
   @protected
   @nonVirtual

@@ -11,4 +11,7 @@ abstract interface class CacheHandlerBaseInterface<K, V> {
 
   /// 指定 [key] のキャッシュに対応する値がアクセスされたことを伝える
   void notifyAccess({required K key});
+
+  /// 指定 [key] のデータがキャッシュされているかどうか
+  bool containsKey(K key);
 }
