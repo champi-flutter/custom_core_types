@@ -90,19 +90,14 @@ abstract class FixedList<E> extends ListBase<ListEntry<E>> {
   @deprecated
   List<ListEntry<E>> toList({bool growable = false}) => _list;
 
-  /// [ListEntry] のリスト
-  @protected
-  List<ListEntry<E>> toListEntryList() => _list;
+  /// エントリのリストを取得する
+  List<ListEntry<E>> toEntryList() => _list;
 
   /// 要素のリストを取得する
   ///
   /// [growable] は `false` 。
   List<E> toValueList() =>
       _list.map((entry) => entry.value).toList(growable: false);
-
-  /// エントリのリストを取得する
-  /// [growable] は `false` 。
-  List<ListEntry<E>> toEntryList() => toList(growable: false);
 
   /// 同じ情報を持つ別の新しいインスタンスを生成する
   ///
