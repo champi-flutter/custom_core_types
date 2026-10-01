@@ -87,7 +87,12 @@ abstract class FixedList<E> extends ListBase<ListEntry<E>> {
   /// 外部からの呼び出しを制限している。
   @override
   @protected
+  @deprecated
   List<ListEntry<E>> toList({bool growable = false}) => _list;
+
+  /// [ListEntry] のリスト
+  @protected
+  List<ListEntry<E>> toListEntryList() => _list;
 
   /// 要素のリストを取得する
   ///
