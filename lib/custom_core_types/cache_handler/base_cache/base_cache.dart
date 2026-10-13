@@ -38,6 +38,10 @@ abstract class BaseCache<K, V, E extends BaseCacheEntry<V>> {
   @nonVirtual
   void removeAt(K key) => _storage.remove(key);
 
+  /// [_storage] の中身を全て削除する
+  @nonVirtual
+  void dispose() => _storage.clear();
+
   /// 指定 [key] のデータにアクセスされたことを伝える
   void notifyAccess({required K key}) => _storage[key]?.onAccess();
 
