@@ -23,3 +23,27 @@ abstract interface class CacheHandlerBaseInterface<K, V> {
   /// 現時点でのキャッシュを Map で返す
   Map<K, V> getAll();
 }
+
+// abstract interface class ReactiveCacheHandlerBaseInterface<K, V> {
+//
+//   /// キャッシュを更新し、出力処理を呼び出す統一フロー
+//   ///
+//   /// key（[dataMap.keys]）に対応する値を [dataMap.values] に更新する。
+//   ///
+//   /// 反映の完了まで待ちたい場合は、`await` をつけるとよい。
+//   Future<void> update(Map<K, V> dataMap);
+//
+//   /// 指定 [key] のキャッシュに対応する値がアクセスされたことを伝える
+//   void notifyAccess({required K key});
+//
+//   /// 指定 [key] のデータがキャッシュされているかどうか
+//   bool containsKey(K key);
+//
+//   /// キャッシュされている指定 [key] の値を返す
+//   ///
+//   /// キャッシュされていない場合は、 `null` をかえす。
+//   V? getAt(K key);
+//
+//   /// 現時点でのキャッシュを Map で返す
+//   Map<K, V> getAll();
+// }

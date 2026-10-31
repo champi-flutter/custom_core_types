@@ -111,22 +111,26 @@ extension DateTimeExtensions on DateTime {
   int get dateId => year * 10000 + month * 100 + day;
 
   /// 今日かどうか
-  bool get isToday => isSameDay(day1: this, day2: today.toDateTime());
+  bool get isToday => isSameDateAs(today.toDateTime());
+
+  /// 日付一致確認メソッド
+  ///
+  /// 全く同じ瞬間ではなくても、同日なら true 。
+  bool isSameDateAs(DateTime other) {
+    return dateId == other.dateId;
+  }
+
+  /// 日付比較メソッド
+  ///
+  /// [isAfter] と違い、時間的には後でも、同日なら false 。
+  bool isDateAfter(DateTime other) {
+    return dateId > other.dateId;
+  }
 }
 
 /// n年前取得メソッド
 DateTime nYearsAgo({required DateTime date, required int n}) {
   return DateTime(date.year - n, date.month, date.day);
-}
-
-/// 日付一致確認メソッド
-bool isSameDay({required DateTime day1, required DateTime day2}) {
-  return day1.dateId == day2.dateId;
-}
-
-/// 日付比較メソッド
-bool isDay1AfterDay2({required DateTime day1, required DateTime day2}) {
-  return day1.dateId > day2.dateId;
 }
 
 /// todo 日付引き算メソッド
