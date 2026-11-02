@@ -5,8 +5,14 @@ import 'package:flutter/material.dart';
 /// 全期間に対して一意に識別できる「月」を表す不変クラス。
 @immutable
 class Month implements Comparable<Month>{
-  final int year;
-  final int month;
+  /// 内部で 00:00:00 の [DateTime] を持つ
+  final DateTime _dt;
+
+  /// [DateTime] に変換（その月の1日）
+  DateTime toDateTime() => _dt;
+
+  int get year => _dt.year;
+  int get month => _dt.month;
 
   // DateTimeのコンストラクタで翌月の「0日」を指定すると、今月の末日が得られるらしい
   int get numberOfDays => DateTime(year, month + 1, 0).day;
@@ -17,7 +23,7 @@ class Month implements Comparable<Month>{
   //       : DateTime(year + 1, 1, 1);
   //   return startOfNextMonth.subtract(Duration(days: 1)).day;
   // }
-  const Month(this.year, this.month);
+  Month(int year, int month): _dt = DateTime(year, month);
 
   factory Month.fromDateTime(DateTime dateTime){
     return Month(dateTime.year, dateTime.month);
@@ -47,9 +53,6 @@ class Month implements Comparable<Month>{
     }
   }
 
-  /// [DateTime] に変換（その月の1日）
-  DateTime toDateTime() => DateTime(year, month, 1);
-
   /// [Date] に変換（その月の1日）
   Date toDate() => Date.onMonth(this, 1);
 
@@ -61,12 +64,36 @@ class Month implements Comparable<Month>{
     }
     return month.compareTo(other.month);
   }
+
   // 各比較演算子
   @override
   bool operator ==(Object other) {
-    assert(other is Month, "DateクラスとDateTimeクラスを直接比較しています。（ == ）");
-    return other is Month && month == other.month && year == other.year;
+    assert(other is! DateTime, "MonthクラスとDateTimeクラスを直接比較しています。（ == ）");
+    return other is Month && _dt == other._dt;
   }
+
+  bool operator <(Month other) {
+    assert(other is! DateTime, "MonthクラスとDateTimeクラスを直接比較しています。( < )");
+    return _dt.isBefore(other._dt);
+  }
+
+  bool operator >(Month other) {
+    assert(other is! DateTime, "MonthクラスとDateTimeクラスを直接比較しています。( > )");
+    return _dt.isAfter(other._dt);
+  }
+
+  bool operator <=(Month other) {
+    assert(other is! DateTime, "MonthクラスとDateTimeクラスを直接比較しています。( <= )");
+    return _dt.isBefore(other._dt) || _dt == other._dt;
+  }
+
+  bool operator >=(Month other) {
+    assert(other is! DateTime, "MonthクラスとDateTimeクラスを直接比較しています。( >= )");
+    return _dt.isAfter(other._dt) || _dt == other._dt;
+  }
+
+  @override
+  int get hashCode => _dt.hashCode;
 }
 
 /// 今月
