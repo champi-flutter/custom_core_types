@@ -53,6 +53,18 @@ class Month implements Comparable<Month>{
     }
   }
 
+  /// 1ヶ月前を取得するメソッド
+  Month toPrevious() {
+    // 12月の場合は、翌年の1月を返す
+    if (month == 1) {
+      return Month(year - 1, 12);
+    }
+    // それ以外は、次の月を返す
+    else {
+      return Month(year, month - 1);
+    }
+  }
+
   /// [Date] に変換（その月の1日）
   Date toDate() => Date.onMonth(this, 1);
 
