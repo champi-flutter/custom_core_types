@@ -1,9 +1,9 @@
 import 'package:custom_core_types/custom_core_types.dart';
 
-/// 使用頻度の低いキャッシュから削除していくキャッシュ
+/// 先に入ったキャッシュから削除していくキャッシュ
 ///  - [capacity]: キャッシュの最大容量
-class FifoListCache<K, El> extends EvictingListCache<K, El, FifoListCacheEntry<El>> {
-  FifoListCache({required super.capacity}) : _last = 0;
+class FifoListCache<K, I, V> extends EvictingListCache<K, I, V, FifoCacheEntry<V>, FifoCache<I, V>> {
+  FifoListCache({required super.capacity}) : _last = 0, super(FifoCache(capacity: capacity));
 
   /// 削除対象決定ロジック
   ///
@@ -13,14 +13,28 @@ class FifoListCache<K, El> extends EvictingListCache<K, El, FifoListCacheEntry<E
   K specifyToEvict() {
     late K result;
     int minSequence = double.maxFinite.toInt();
+    // 全キャッシュを探索
+    for(final targetKey in group.keys){
+      // targetKey に含まれるキャッシュのリストをエントリ型で参照する
+      final List<FifoCacheEntry<V>> targetEntList = getEntries(targetKey);
 
-    for (final entry in storage.entries) {
-      if (entry.value.sequence < minSequence) {
-        minSequence = entry.value.sequence;
-        result = entry.key;
+      // グループ内で最も最近のキャッシュの sequence を決定する
+      int? newestSequence;
+      for (final ent in targetEntList) {
+        newestSequence ??= ent.sequence;
+        if (ent.sequence < minSequence) {
+          minSequence = ent.sequence;
+        }
+      }
+      if(newestSequence == null){
+        continue;
+      }
+      // minSequence の初期値は無限なので必ず一回は回る
+      if(newestSequence < minSequence){
+        minSequence = newestSequence;
+        result = targetKey;
       }
     }
-
     return result;
   }
 
@@ -32,8 +46,8 @@ class FifoListCache<K, El> extends EvictingListCache<K, El, FifoListCacheEntry<E
     return _last;
   }
 
-  /// [FifoListCacheEntry] を提供するファクトリメソッド
+  /// [FifoCacheEntry] を提供するファクトリメソッド
   @override
-  FifoListCacheEntry<El> createEntry(List<El> value) =>
-      FifoListCacheEntry<El>(value, sequence: _next);
+  FifoCacheEntry<V> createEntry(V value) =>
+      FifoCacheEntry<V>(value, sequence: _next);
 }

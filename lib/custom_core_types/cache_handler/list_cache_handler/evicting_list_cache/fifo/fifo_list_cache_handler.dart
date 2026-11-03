@@ -17,9 +17,9 @@ import 'package:custom_core_types/custom_core_types.dart';
 /// ```
 ///
 /// このクラスを継承して、[output] に、キャッシュ更新時の反映処理を記述する。
-abstract class FifoListCacheHandler<K, El>
-    extends BaseListCacheHandler<K, El, FifoListCache<K, El>> {
+abstract class FifoListCacheHandler<K, I, V>
+    extends BaseListCacheHandler<K, I, V, FifoCacheEntry<V>, FifoCache<I, V>, FifoListCache<K, I, V>>{
 
   FifoListCacheHandler({required int capacity})
-      : super(FifoListCache<K, El>(capacity: capacity));
+      : super(FifoListCache<K, I, V>(capacity: capacity));
 }
