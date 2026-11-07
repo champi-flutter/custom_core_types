@@ -46,7 +46,10 @@ class LazyMap<K, V> extends MapBase<K, V> {
       // まだ登録されていない key にアクセスされた場合
       if (value == null) {
         onNewAccess(key);
-        return placeholder(key);
+        // 2026/11/07 修正: 新規 key アクセス時に、_source に placeholder を入れる
+        final ph = placeholder(key);
+        _source[key] = ph;
+        return ph;
       }
       // すでに値がある場合はそれを返す
       else {
