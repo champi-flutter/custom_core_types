@@ -106,7 +106,63 @@ abstract class FixedList<E> extends ListBase<ListEntry<E>> {
 
   /// [deepCopy] 用のコンストラクタ。継承先の内部でのみ呼び出し可能。
   @protected
-  FixedList.copy(List<ListEntry<E>> list): _list = list;
+  FixedList.copy(List<ListEntry<E>> list) : _list = list;
+
+  // 2026/11/13 追加:
+  // region リスト長変更アクセスの制限
+  /// Unsupported を明示
+  Never _throwUnsupported() =>
+      throw UnsupportedError("[FixedList] リスト長変更のアクセスがありました。");
+
+  @override
+  @protected
+  void add(ListEntry<E> element) => _throwUnsupported();
+
+  @override
+  @protected
+  void addAll(Iterable<ListEntry<E>> iterable) => _throwUnsupported();
+
+  @override
+  @protected
+  bool remove(Object? element) => _throwUnsupported();
+
+  @override
+  @protected
+  ListEntry<E> removeAt(int index) => _throwUnsupported();
+
+  @override
+  @protected
+  ListEntry<E> removeLast() => _throwUnsupported();
+
+  @override
+  @protected
+  void removeRange(int start, int end) => _throwUnsupported();
+
+  @override
+  @protected
+  void removeWhere(bool Function(ListEntry<E> element) _) => _throwUnsupported();
+
+  @override
+  @protected
+  void retainWhere(bool Function(ListEntry<E> element) _) => _throwUnsupported();
+
+  @override
+  @protected
+  void replaceRange(int start, int end, Iterable<ListEntry<E>> _) =>
+      _throwUnsupported();
+
+  @override
+  @protected
+  void clear() => _throwUnsupported();
+
+  @override
+  @protected
+  void insert(int index, ListEntry<E> _) => _throwUnsupported();
+
+  @override
+  @protected
+  void insertAll(int index, Iterable<ListEntry<E>> _) => _throwUnsupported();
+  // endregion
 }
 
 /// [FixedList] のインデックスと要素の組み合わせ
