@@ -88,7 +88,7 @@ abstract class FixedList<E> extends ListBase<ListEntry<E>> {
   /// 外部からの呼び出しを制限している。
   @override
   @protected
-  @deprecated
+  @Deprecated("代わりに toEntryList を使ってください")
   List<ListEntry<E>> toList({bool growable = false}) => _list;
 
   /// エントリのリストを取得する
@@ -107,7 +107,11 @@ abstract class FixedList<E> extends ListBase<ListEntry<E>> {
 
   /// `List<ListEntry<E>>` から作るコンストラクタ。継承先の内部でのみ呼び出し可能。
   @protected
-  FixedList.copy(List<ListEntry<E>> list) : _list = [...list];
+  FixedList.copy(List<ListEntry<E>> list)
+      : _list = List<ListEntry<E>>.of(
+    list,
+    growable: false,
+  );
 
   // 2026/11/13 追加:
   // region リスト長変更アクセスの制限
@@ -177,8 +181,20 @@ class ListEntry<E> {
 
   ListEntry._(this.index, this._value);
 
-  /// 独立した ListEntry を生成する
-  ListEntry<E> copy() => ListEntry._(index, value);
+  // /// 独立した ListEntry を生成する
+  // ListEntry<E> copy() => ListEntry._(index, value);
+
+  /// 同じ値を持つ新しい ListEntry を生成する
+  ///
+  /// [valueBuilder] : [value] を作る処理（Built-in の場合は引数をそのまま返す関数）
+  ListEntry<E> copy({
+    required E Function(E value) valueBuilder,
+  }) {
+    return ListEntry._(
+      index,
+      valueBuilder(value),
+    );
+  }
 
   // @protected
   // factory ListEntry.immutable(int index, E value) => ListEntry._(index, value);
