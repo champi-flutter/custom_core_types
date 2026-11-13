@@ -75,6 +75,8 @@ export 'package:custom_core_types/custom_core_types/custom_collection/bi_map.dar
 export 'package:custom_core_types/custom_core_types/custom_collection/fixed_list.dart';
 export 'package:custom_core_types/custom_core_types/custom_collection/group.dart';
 export 'package:custom_core_types/custom_core_types/custom_collection/lazy_map.dart';
+export 'package:custom_core_types/custom_core_types/custom_collection/collection_snapshot/list_snapshot.dart';
+export 'package:custom_core_types/custom_core_types/custom_collection/collection_snapshot/map_snapshot.dart';
 
 // extended_core
 export 'package:custom_core_types/extended_core/date_time_options.dart';

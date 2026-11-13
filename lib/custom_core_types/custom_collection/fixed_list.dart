@@ -68,10 +68,11 @@ abstract class FixedList<E> extends ListBase<ListEntry<E>> {
 
   /// 指定 [index] に値を代入する
   void setAt(int index, E newElement) {
-    this[index].value = newElement;
+    this[index]._setValue(newElement);
   }
 
   // 使用を制限（ListEntry のコンストラクタがプライベートなので代入不可）
+  @protected
   @override
   void operator []=(int index, ListEntry<E> newEntry) {
     _list[index] = newEntry;
@@ -104,9 +105,9 @@ abstract class FixedList<E> extends ListBase<ListEntry<E>> {
   /// 継承先で override
   FixedList<E> get deepCopy;
 
-  /// [deepCopy] 用のコンストラクタ。継承先の内部でのみ呼び出し可能。
+  /// `List<ListEntry<E>>` から作るコンストラクタ。継承先の内部でのみ呼び出し可能。
   @protected
-  FixedList.copy(List<ListEntry<E>> list) : _list = list;
+  FixedList.copy(List<ListEntry<E>> list) : _list = [...list];
 
   // 2026/11/13 追加:
   // region リスト長変更アクセスの制限
@@ -168,9 +169,19 @@ abstract class FixedList<E> extends ListBase<ListEntry<E>> {
 /// [FixedList] のインデックスと要素の組み合わせ
 class ListEntry<E> {
   final int index;
-  E value;
+  E _value;
 
-  ListEntry._(this.index, this.value);
+  E get value => _value;
+
+  void _setValue(E newValue) => _value = newValue;
+
+  ListEntry._(this.index, this._value);
+
+  /// 独立した ListEntry を生成する
+  ListEntry<E> copy() => ListEntry._(index, value);
+
+  // @protected
+  // factory ListEntry.immutable(int index, E value) => ListEntry._(index, value);
 }
 
 extension ToFixedList<E> on Iterable<E> {
