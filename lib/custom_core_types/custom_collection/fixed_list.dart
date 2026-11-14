@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'package:collection/collection.dart';
 
 import 'package:flutter/foundation.dart';
+import 'package:meta/meta.dart';
 
 /// 要素数が固定で、各要素が index を保持するリストの基底クラス
 ///
@@ -100,18 +101,60 @@ abstract class FixedList<E> extends ListBase<ListEntry<E>> {
   List<E> toValueList() =>
       _list.map((entry) => entry.value).toList(growable: false);
 
-  /// 同じ情報を持つ別の新しいインスタンスを生成する
+  /// 同じ情報を持つ別の新しいインスタンスを生成する。
   ///
-  /// 継承先で override
-  FixedList<E> get deepCopy;
+  /// 継承先では、以下の2つを実装すること。
+  ///
+  /// 1. `super.deepCopy` をイニシャライザリストで呼び出す
+  ///    複製用コンストラクタを設ける。
+  /// 2. 本メソッドを override し、上記の複製用コンストラクタで
+  ///    生成したインスタンスを返す。
+  ///
+  /// 例:
+  /// ```dart
+  /// class SampleList<E> extends FixedList<E> {
+  ///
+  ///   // (1) 複製用コンストラクタ
+  ///   SampleList._callDeepCopy(List<ListEntry<E>> entryList{
+  ///     required E Function(E value) copyBuilder,
+  ///   })
+  ///       : super.callDeepCopy(
+  ///           entryList,
+  ///           copyBuilder: copyBuilder,
+  ///         );
+  ///
+  ///   // (2) deepCopy の override
+  ///   @override
+  ///   SampleList<E> deepCopy({
+  ///     required E Function(E value) copyBuilder,
+  ///   }) =>
+  ///       SampleList<E>._callDeepCopy(
+  ///           toEntryList(),
+  ///           copyBuilder: copyBuilder,
+  ///         );
+  /// }
+  /// ```
+  FixedList<E> deepCopy({
+    required E Function(E value) copyBuilder,
+  });
 
   /// `List<ListEntry<E>>` から作るコンストラクタ。継承先の内部でのみ呼び出し可能。
+  ///
+  /// [copyBuilder] : ListEntry の value を作る処理
+  /// （Built-in の場合は引数をそのまま返す関数）
   @protected
-  FixedList.copy(List<ListEntry<E>> list)
-      : _list = List<ListEntry<E>>.of(
-    list,
-    growable: false,
-  );
+  FixedList.callDeepCopy(
+    List<ListEntry<E>> entryList,{
+    required E Function(E value) copyBuilder,
+  }) : _list = List.generate(
+         entryList.length,
+         (i) => entryList[i].copy(valueBuilder: copyBuilder),
+         growable: false, // 固定長化
+       );
+
+  /// `List<ListEntry<E>>` から作るコンストラクタ。
+  FixedList.fromListEntry(List<ListEntry<E>> list)
+      : _list = List.of(list, growable: false);
 
   // 2026/11/13 追加:
   // region リスト長変更アクセスの制限
@@ -145,11 +188,13 @@ abstract class FixedList<E> extends ListBase<ListEntry<E>> {
 
   @override
   @protected
-  void removeWhere(bool Function(ListEntry<E> element) _) => _throwUnsupported();
+  void removeWhere(bool Function(ListEntry<E> element) _) =>
+      _throwUnsupported();
 
   @override
   @protected
-  void retainWhere(bool Function(ListEntry<E> element) _) => _throwUnsupported();
+  void retainWhere(bool Function(ListEntry<E> element) _) =>
+      _throwUnsupported();
 
   @override
   @protected
@@ -187,13 +232,8 @@ class ListEntry<E> {
   /// 同じ値を持つ新しい ListEntry を生成する
   ///
   /// [valueBuilder] : [value] を作る処理（Built-in の場合は引数をそのまま返す関数）
-  ListEntry<E> copy({
-    required E Function(E value) valueBuilder,
-  }) {
-    return ListEntry._(
-      index,
-      valueBuilder(value),
-    );
+  ListEntry<E> copy({required E Function(E value) valueBuilder}) {
+    return ListEntry._(index, valueBuilder(value));
   }
 
   // @protected
