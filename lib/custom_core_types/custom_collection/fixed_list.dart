@@ -115,13 +115,8 @@ abstract class FixedList<E> extends ListBase<ListEntry<E>> {
   /// class SampleList<E> extends FixedList<E> {
   ///
   ///   // (1) 複製用コンストラクタ
-  ///   SampleList._callDeepCopy(List<ListEntry<E>> entryList, {
-  ///     required E Function(E value) copyBuilder,
-  ///   })
-  ///       : super.callDeepCopy(
-  ///           entryList,
-  ///           copyBuilder: copyBuilder,
-  ///         );
+  ///   SampleList._callDeepCopy(super.entryList, super.copyBuilder)
+  ///       : super.callDeepCopy();
   ///
   ///   // (2) deepCopy の override
   ///   @override
@@ -130,13 +125,11 @@ abstract class FixedList<E> extends ListBase<ListEntry<E>> {
   ///   }) =>
   ///       SampleList<E>._callDeepCopy(
   ///           toEntryList(),
-  ///           copyBuilder: copyBuilder,
+  ///           copyBuilder,
   ///         );
   /// }
   /// ```
-  FixedList<E> deepCopy({
-    required E Function(E value) copyBuilder,
-  });
+  FixedList<E> deepCopy({required E Function(E value) copyBuilder});
 
   /// `List<ListEntry<E>>` から作るコンストラクタ。継承先の内部でのみ呼び出し可能。
   ///
@@ -144,17 +137,17 @@ abstract class FixedList<E> extends ListBase<ListEntry<E>> {
   /// （Built-in の場合は引数をそのまま返す関数）
   @protected
   FixedList.callDeepCopy(
-    List<ListEntry<E>> entryList,{
-    required E Function(E value) copyBuilder,
-  }) : _list = List.generate(
-         entryList.length,
-         (i) => entryList[i].copy(valueBuilder: copyBuilder),
-         growable: false, // 固定長化
-       );
+    List<ListEntry<E>> entryList,
+    E Function(E value) copyBuilder,
+  ) : _list = List.generate(
+        entryList.length,
+        (i) => entryList[i].copy(valueBuilder: copyBuilder),
+        growable: false, // 固定長化
+      );
 
   /// `List<ListEntry<E>>` から作るコンストラクタ。
   FixedList.fromListEntry(List<ListEntry<E>> list)
-      : _list = List.of(list, growable: false);
+    : _list = List.of(list, growable: false);
 
   // 2026/11/13 追加:
   // region リスト長変更アクセスの制限

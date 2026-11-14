@@ -33,12 +33,12 @@ class SampleFixedList<E> extends FixedList<E> {
 
   // 対象となるリストクラス（このクラス）の `FixedList.callDeepCopy` を
   // 継承するコンストラクタは、public にする
-  SampleFixedList.callDeepCopy(super.entryList, {required super.copyBuilder})
+  SampleFixedList.callDeepCopy(super.entryList, super.copyBuilder)
     : super.callDeepCopy();
 
   @override
   SampleFixedList<E> deepCopy({required E Function(E value) copyBuilder}) =>
-      SampleFixedList.callDeepCopy(toEntryList(), copyBuilder: copyBuilder);
+      SampleFixedList.callDeepCopy(toEntryList(), copyBuilder);
 }
 
 /// サンプル
@@ -50,7 +50,7 @@ class SampleFixedListSnapshot<E>
   // 内部に対象リストクラスを持つわけではないので、 `deepCopy` メソッドは使えない
   @override
   SampleFixedList<E> toOriginal() =>
-      SampleFixedList.callDeepCopy(entryList, copyBuilder: elementBuilder);
+      SampleFixedList.callDeepCopy(entryList, elementBuilder);
 }
 
 class Hoge {
@@ -86,7 +86,7 @@ class Hoge {
 ///
 ///   @override
 ///   SampleFixedList<E> deepCopy({required E Function(E value) copyBuilder}) =>
-///       SampleFixedList.callDeepCopy(toEntryList(), copyBuilder: copyBuilder);
+///       SampleFixedList.callDeepCopy(toEntryList(), copyBuilder);
 /// }
 ///
 /// /// サンプル
@@ -98,7 +98,7 @@ class Hoge {
 ///   // 内部に対象リストクラスを持つわけではないので、 `deepCopy` メソッドは使えない
 ///   @override
 ///   SampleFixedList<E> toOriginal() =>
-///       SampleFixedList.callDeepCopy(entryList, copyBuilder: elementBuilder);
+///       SampleFixedList.callDeepCopy(entryList, elementBuilder);
 /// }
 /// ```
 ///
@@ -147,7 +147,7 @@ abstract class FixedListSnapshot<E, R extends FixedList<E>> {
   ///   // 内部に対象リストクラスを持つわけではないので、 `deepCopy` メソッドは使えない
   ///   @override
   ///   SampleFixedList<E> toOriginal() =>
-  ///       SampleFixedList.callDeepCopy(entryList, copyBuilder: elementBuilder);
+  ///       SampleFixedList.callDeepCopy(entryList, elementBuilder);
   /// ```
   R toOriginal();
 }
