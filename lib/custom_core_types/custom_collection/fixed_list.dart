@@ -115,7 +115,7 @@ abstract class FixedList<E> extends ListBase<ListEntry<E>> {
   /// class SampleList<E> extends FixedList<E> {
   ///
   ///   // (1) 複製用コンストラクタ
-  ///   SampleList._callDeepCopy(List<ListEntry<E>> entryList{
+  ///   SampleList._callDeepCopy(List<ListEntry<E>> entryList, {
   ///     required E Function(E value) copyBuilder,
   ///   })
   ///       : super.callDeepCopy(

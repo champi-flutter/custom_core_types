@@ -3,13 +3,21 @@ import 'dart:math';
 import 'package:custom_core_types/custom_core_types.dart';
 import 'package:flutter/foundation.dart';
 
+/// 対象 List をその時点での状態で格納するクラス
 abstract class ListSnapshot<E> {
+  /// 対象 List をその時点での状態で格納するクラス
+  ///
+  ///  - [elementBuilder] : 要素の新しいオブジェクトを生成する Builder 関数
+  ///  （Built-in の場合は、引数をそのまま返す関数でよい。)
   ListSnapshot(List<E> list, {required E Function(E element) elementBuilder})
     : _data = List.unmodifiable(list),
       _elementBuilder = elementBuilder;
 
   final List<E> _data;
 
+  /// 要素の新しいオブジェクトを生成する Builder 関数
+  ///
+  /// Built-in の場合は、引数をそのまま返す関数でよい。
   final E Function(E element) _elementBuilder;
 
   E? operator [](int index) => _data[index];
