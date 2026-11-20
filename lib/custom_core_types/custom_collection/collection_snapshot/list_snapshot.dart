@@ -8,6 +8,16 @@ abstract class _ListSnapshotBase<E> {
   final List<E> _data;
 
   E? operator [](int index) => _data[index];
+
+  int get length => _data.length;
+
+  bool get isEmpty => _data.isEmpty;
+
+  bool get isNotEmpty => _data.isNotEmpty;
+
+  bool contains(E? element) => _data.contains(element);
+
+  List<E> toMutable() => List<E>.of(_data);
 }
 
 /// 整数の List のその時点での状態を格納するクラス
