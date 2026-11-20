@@ -1,27 +1,52 @@
-import 'dart:math';
-
 import 'package:custom_core_types/custom_core_types.dart';
 import 'package:flutter/foundation.dart';
 
-/// 対象 List をその時点での状態で格納するクラス
-abstract class ListSnapshot<E> {
-  /// 対象 List をその時点での状態で格納するクラス
+/// 対象 List のその時点での状態を格納するクラス
+abstract class _ListSnapshotBase<E> {
+  _ListSnapshotBase(List<E> list) : _data = List.unmodifiable(list);
+
+  final List<E> _data;
+
+  E? operator [](int index) => _data[index];
+}
+
+/// 整数の List のその時点での状態を格納するクラス
+abstract class IntListSnapshot extends _ListSnapshotBase<int> {
+  IntListSnapshot(super.list);
+}
+
+/// 浮動小数点数の List のその時点での状態を格納するクラス
+abstract class DoubleListSnapshot extends _ListSnapshotBase<double> {
+  DoubleListSnapshot(super.list);
+}
+
+/// 文字列の List のその時点での状態を格納するクラス
+abstract class StringListSnapshot extends _ListSnapshotBase<String> {
+  StringListSnapshot(super.list);
+}
+
+/// bool の List のその時点での状態を格納するクラス
+abstract class BoolListSnapshot extends _ListSnapshotBase<bool> {
+  BoolListSnapshot(super.list);
+}
+
+/// 要素がオブジェクトクラスの List のその時点での状態を格納するクラス
+abstract class ObjectListSnapshot<E> extends _ListSnapshotBase<E> {
+  /// 要素がオブジェクトクラスの List のその時点での状態を格納するクラス
   ///
   ///  - [elementBuilder] : 要素の新しいオブジェクトを生成する Builder 関数
   ///  （Built-in の場合は、引数をそのまま返す関数でよい。)
-  ListSnapshot(List<E> list, {required E Function(E element) elementBuilder})
-    : _data = List.unmodifiable(list),
-      _elementBuilder = elementBuilder;
-
-  final List<E> _data;
+  ObjectListSnapshot(
+    super.list, {
+    required E Function(E element) elementBuilder,
+  }) : _elementBuilder = elementBuilder;
 
   /// 要素の新しいオブジェクトを生成する Builder 関数
   ///
   /// Built-in の場合は、引数をそのまま返す関数でよい。
   final E Function(E element) _elementBuilder;
 
-  E? operator [](int index) => _data[index];
-
+  /// 要素の変更が可能な状態に戻す
   List<E> toMutable() =>
       _data.map<E>((E element) => _elementBuilder(element)).toList();
 }
@@ -75,14 +100,13 @@ abstract class ListSnapshot<E> {
 ///   print(snapshot[1]!.value); // 大人
 /// }
 /// ```
-abstract class FixedListSnapshot<E, R extends FixedList<E>> {
+abstract class FixedListSnapshot<E, R extends FixedList<E>>
+    extends _ListSnapshotBase<ListEntry<E>> {
   FixedListSnapshot(
     R fixedList, {
     required E Function(E element) elementBuilder,
-  }) : _data = fixedList.toEntryList(),
-       elementBuilder = elementBuilder;
-
-  final List<ListEntry<E>> _data;
+  }) : elementBuilder = elementBuilder,
+       super(fixedList.toEntryList());
 
   @protected
   List<ListEntry<E>> get entryList => _data;
@@ -91,9 +115,6 @@ abstract class FixedListSnapshot<E, R extends FixedList<E>> {
 
   @protected
   final E Function(E element) elementBuilder;
-
-  /// [ListEntry.value] には setter がないので変更不可
-  ListEntry<E>? operator [](int index) => _data[index];
 
   /// 元の（[FixedList] を継承した）固定長リストを返す
   ///
