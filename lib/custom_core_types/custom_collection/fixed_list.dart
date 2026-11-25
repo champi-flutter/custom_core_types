@@ -97,9 +97,9 @@ abstract class FixedList<E> extends ListBase<ListEntry<E>> {
 
   /// 要素のリストを取得する
   ///
-  /// [growable] は `false` 。
-  List<E> toValueList() =>
-      _list.map((entry) => entry.value).toList(growable: false);
+  /// [growable] を必ず指定すること 。
+  List<E> toValueList({required bool growable}) =>
+      _list.map((entry) => entry.value).toList(growable: growable);
 
   /// 同じ情報を持つ別の新しいインスタンスを生成する。
   ///
